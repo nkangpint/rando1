@@ -169,7 +169,7 @@
           const XHR = new XMLHttpRequest();
           // We add the partial query param to let the server know we don't
           // want all the content, just the new stuff.
-          XHR.open('GET', `pages${route.path}`, true);
+          XHR.open('GET', `pages${route.path}.html`, true);
           XHR.responseType = 'document';
           XHR.send();
           // On request return, run 'completed' fn

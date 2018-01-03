@@ -1,0 +1,29 @@
+{
+  "entrypoint": "index.html",
+  "shell": "app-shell.html",
+  "fragments": [
+    "pages/**/*"
+  ],
+  "sources": [
+    "components/**/*",
+    "assets/**/*",
+    "libraries/**/*",
+    "mixins/**/*",
+    "vendor/**/*"
+  ],
+  "extraDependencies": [
+  ],
+  "builds": [{
+    "name": "es5",
+    "js": {
+      "minify": false,
+      "compile": true 
+    },
+    "css": {
+      "minify": false 
+    },
+    "html": {
+      "minify": false 
+    }
+  }]
+}

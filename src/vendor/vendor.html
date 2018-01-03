@@ -1,0 +1,18 @@
+<!--
+Add vendor CSS and JS init calls here.
+This is loaded as an .html import to <app-shell> so that Polymer
+can control these dependencies (prevents script loading de-duplication, etc.)
+
+If you are initing a JS lib that requires targeting elements directly,
+you will need to run your init code AFTER the partial is loaded to the DOM
+(see _initVendorCode() method in app-shell.html - Init code you add here is added after the $WRAPPER.appendChild() call)
+NOTE: you may need to querySelect the target elements again since they were loaded to the DOM after app-shell loaded,
+NOTE: thus the idea of 'hyrdating', or re-binding, the new DOM code with existing code in window.
+-->
+
+<!-- HIGHTLIGHT.JS -->
+<!-- This example inits the hightlight.js library so you can syntax-highlight <pre><code> examples -->
+<!-- We manually 'hydrate' the added DOM code when each new partial is loaded -->
+<!-- See the hljs.highlightBlock(block) init call in _initVendorCode() in /src/app-shell.html -->
+<!--<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">-->
+<!--<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>-->

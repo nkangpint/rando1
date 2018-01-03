@@ -1,0 +1,79 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<dom-module id="circle-icon">
+  <template>
+    <style>
+      :host {
+        background-color: var(--icon-bg, white);
+        background-image: url('../assets/images/bg-circle-icons.png');
+        background-position-x: 50%;
+        border-radius: 50%;
+        display: inline-block;
+        height: 140px;
+        width: 140px;
+      }
+
+      /* WHITE ILLUSTRATIONS */
+      :host([icon="magnify"]) {
+        background-color: #8aab57;
+        background-position-y: 0;
+      }
+      :host([icon="bulb"]) {
+        background-color: #8aab57;
+        background-position-y: 8.3%;
+      }
+      :host([icon="gears"]) {
+        background-color: #8aab57;
+        background-position-y: 16.8%;
+      }
+      :host([icon="cycle"]) {
+        background-color: #8aab57;
+        background-position-y: 25.3%;
+      }
+
+      /* GREEN ILLUSTRATIONS */
+      :host([icon="picture"]) {
+        background-position-y: 33.6%;
+      }
+      :host([icon="brackets"]) {
+        background-position-y: 42.1%;
+      }
+      :host([icon="tools"]) {
+        background-position-y: 50.5%;
+      }
+      :host([icon="machine"]) {
+        background-position-y: 59%;
+      }
+      :host([icon="award"]) {
+        background-position-y: 67.3%;
+      }
+      :host([icon="brush"]) {
+        background-position-y: 75.7%;
+      }
+
+      @media screen and (max-width:768px) {
+        :host {
+          background-size: 100px;
+          height: 100px;
+          width: 100px;
+        }
+      }
+    </style>
+  </template>
+
+  <script>
+    class CircleIcon extends Polymer.Element {
+      static get is() { return 'circle-icon'; }
+
+      static get properties() {
+        return {
+          icon: {
+            type: String
+          }
+        }
+      }
+    }
+
+    customElements.define(CircleIcon.is, CircleIcon);
+  </script>
+</dom-module>

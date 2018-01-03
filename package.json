@@ -1,0 +1,18 @@
+{
+  "name": "pwa-pint",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "node node_modules/pwa-build build --config config/main.js",
+    "build:prod": "node node_modules/pwa-build build --config config/main.js --min --es5 --sw --sitemap --fb",
+    "dev": "node node_modules/pwa-build dev --config config/main.js",
+    "deploy": "npm run build:prod && firebase deploy"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "pwa-build": "git+ssh://git@gitlab.pint.com:pwa/pwa-build.git#0.0.1"  
+  }
+}

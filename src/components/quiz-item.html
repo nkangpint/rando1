@@ -1,0 +1,170 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/polymer/lib/mixins/gesture-event-listeners.html">
+
+<dom-module id="quiz-item">
+  <template>
+    <style>
+      :host {
+        --correct-color: #8aab57;
+        --quiz-item__icon-color: #559cbe;
+        --wrong-color: #c14040;
+        box-sizing: border-box;
+        cursor: pointer;
+        display: block;
+        position: relative;
+      }
+      :host([selected]) {
+        z-index: 2;
+      }
+
+      /* Wrapper */
+      .quiz-item__container {
+        position: relative;
+      }
+
+      /* Question Slot */
+      .quiz-item__question {
+        box-sizing: border-box;
+        padding: 0 1.25rem;
+        margin: 0;
+        text-align: center;
+      }
+
+      /* Answer Slot */
+      .quiz-item__answer {
+        background: #fff;
+        border: 3px solid;
+        box-sizing: border-box;
+        display: none;
+        left: 50%;
+        padding: 2.5rem 1rem .5rem;
+        position: absolute;
+        text-align: center;
+        top: 40px;
+        transform: translateX(-50%);
+        width: 260px;
+      }
+      :host([selected]) .quiz-item__answer {
+        border-color: var(--wrong-color);
+        display: block;
+      }
+      :host([selected][correct]) .quiz-item__answer {
+        border-color: var(--correct-color);
+      }
+
+      /* Icon */
+      .quiz-item__icon {
+        align-items: center;
+        background: var(--quiz-item__icon-color);
+        border-radius: 50%;
+        box-sizing: border-box;
+        color: #fff;
+        display: flex;
+        font-size: 40px;
+        height: 80px;
+        justify-content: center;
+        margin: 0 auto;
+        position: relative;
+        user-select: none;
+        width: 80px;
+        z-index: 1;
+      }
+      .quiz-item__icon:after {
+        display: none;
+      }
+      /* Wrong */
+      :host([selected]) .quiz-item__icon {
+        background: var(--wrong-color);
+      }
+      :host([selected]) .quiz-item__icon:after {
+        content: 'X';
+        display: block;
+      }
+      :host([selected]) .quiz-item__icon > span {
+        display: none;
+      }
+      /* Correct */
+      :host([selected][correct]) .quiz-item__icon {
+        background: var(--correct-color);
+      }
+      :host([selected][correct]) .quiz-item__icon:after {
+        content: '✓';
+      }
+    </style>
+
+    <div class="quiz-item__container" on-tap="_onTap">
+      <span class="quiz-item__icon"><span>[[ label ]]</span></span>
+      <div class="quiz-item__question">
+        <slot name="question"></slot>
+      </div>
+      <div class="quiz-item__answer">
+        <slot name="answer"></slot>
+      </div>
+    </div>
+  </template>
+
+  <script>
+    class QuizItem extends Polymer.GestureEventListeners(Polymer.Element) {
+      static get is() { return 'quiz-item'; }
+
+      static get properties() {
+        return {
+          // Add attribute to mark instance as the correct item: <quiz-item correct ...>
+          correct: {
+            type: Boolean,
+            value: false,
+          },
+          // Hide content until component loaded (see main.css for mounted style) 
+          mounted: {
+            type: Boolean,
+            value: true,
+            reflectToAttribute: true,
+          },
+          // Starting label to show in the icon
+          label: {
+            type: String,
+            value: '?',
+          },
+          // Toggle quiz items from a scoped parent: <quiz-item parent="PARENT-ID" ...>
+          // Or all quiz item instances in the document: <quiz-item ...>
+          parent: {
+            type: String,
+          },
+          // Is this instance the currently selected one?
+          selected: {
+            type: Boolean,
+            value: false,
+            reflectToAttribute: true,
+          },
+        };
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+      }
+
+      _onTap() {
+        // Toggle if selected or not
+        this.selected = !this.selected;
+        // If now selected, close any other active (scoped) instances
+        if (this.selected) this._setActive();
+      }
+
+      _setActive() {
+        // Find parent elem to scope from
+        const parent = document.getElementById(this.parent);
+        // If parent target id supplied, use it, otherwise use document object
+        const target = parent || document;
+        // Grab all targeted instances
+        // NOTE: Using Array.from() since IE doesn't support nodeList .forEach()
+        const items = Array.from(target.querySelectorAll('quiz-item'));
+        // Deselect all matched instances
+        items.forEach(item => item.selected = false);
+        // Set clicked instance to selected
+        this.selected = true;
+      }
+    }
+
+    window.customElements.define(QuizItem.is, QuizItem);
+  </script>
+</dom-module>

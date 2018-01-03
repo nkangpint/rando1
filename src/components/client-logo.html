@@ -1,0 +1,91 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<dom-module id="client-logo">
+  <template>
+    <style>
+      :host {
+        background-color: white;
+        display: block;
+        height: 120px;
+      }
+      #logo {
+        background-image: url('../assets/images/bg-clients--all.png');
+        height: 100%;
+        margin: 0 auto;
+        max-width: 180px;
+        width: 100%;
+      }
+      :host([name="verizon"]) #logo {
+        background-position: 50% 0;
+      }
+      :host([name="qualcomm"]) #logo {
+        background-position: 50% -120px;
+      }
+      :host([name="marthastewart"]) #logo {
+        background-position: 50% -270px;
+      }
+      :host([name="viewsonic"]) #logo {
+        background-position: 50% -410px;
+      }
+      :host([name="biogen"]) #logo {
+        background-position: 50% -540px;
+      }
+      :host([name="coopervision"]) #logo {
+        background-position: 50% -700px;
+      }
+      :host([name="central"]) #logo {
+        background-position: 50% -850px;
+      }
+      :host([name="mor"]) #logo {
+        background-position: 50% -980px;
+      }
+      :host([name="kyocera"]) #logo {
+        background-position: 50% -1105px;
+      }
+      :host([name="usc"]) #logo {
+        background-position: 50% -1250px;
+      }
+      :host([name="ucsd"]) #logo {
+        background-position: 50% -1400px;
+      }
+      :host([name="inovio"]) #logo {
+        background-position: 50% -1525px;
+      }
+      :host([name="kla"]) #logo {
+        background-position: 50% -1650px;
+      }
+      :host([name="nylabone"]) #logo {
+        background-position: 50% -1785px;
+      }
+      :host([name="steadymed"]) #logo {
+        background-position: 50% -1930px;
+      }
+      :host([name="omnicell"]) #logo {
+        background-position: 50% -2050px;
+      }
+      :host([name="chargers"]) #logo {
+        background-position: 50% -2180px;
+      }
+      :host([name="ipc"]) #logo {
+        background-position: 50% -2330px;
+      }
+      :host([name="amylin"]) #logo {
+        background-position: 50% 422px;
+        background-size: 160px;
+      }
+      :host([name="femsa"]) #logo {
+        background-position: 50% -2645px;
+      }
+    </style>
+
+    <div id="logo"></div>
+  </template>
+
+  <script>
+    class ClientLogo extends Polymer.Element {
+      static get is() { return 'client-logo'; }
+    }
+
+    customElements.define(ClientLogo.is, ClientLogo);
+  </script>
+</dom-module>

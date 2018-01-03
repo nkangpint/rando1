@@ -1,0 +1,65 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<dom-module id="form-field">
+  <template>
+    <style>
+      :host {
+        box-sizing: border-box;
+        display: block;
+        margin: 1rem 0;
+      }
+      label {
+        box-sizing: border-box;
+      }
+      input {
+        background: white;
+        font-size: 1rem;
+        padding: 0.25rem 0.5rem;
+        width: 100%;
+      }
+      label > span {
+        font-size: 0.875rem;
+      }
+    </style>
+
+    <label>
+      <span>[[ label ]]</span>
+      <br>
+      <input type$="[[ type ]]" on-input="_onInput">
+    </label>
+  </template>
+
+  <script>
+    class FormField extends Polymer.Element {
+      static get is() { return 'form-field'; }
+
+      static get properties() {
+        return {
+          type: {
+            type: String,
+            reflectToAttribute: true
+          },
+
+          label: {
+            type: String,
+            reflectToAttribute: true
+          }
+        }
+      }
+
+      _onInput(event) {
+        console.log('Input', this.type, event.target.value);
+      }
+
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+      }
+    }
+
+    customElements.define(FormField.is, FormField);
+  </script>
+</dom-module>

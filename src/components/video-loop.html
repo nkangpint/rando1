@@ -1,0 +1,173 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<dom-module id="video-loop">
+  <template>
+    <style>
+      :host {
+        box-sizing: border-box;
+        contain: layout;
+        display: block;
+        width: 100%;
+      }
+      *,
+      *:before,
+      *:after {
+        box-sizing: border-box;
+      }
+      video {
+        display: block;
+        height: auto;
+        max-width: 100%;
+        width: 100%;
+      }
+      #cap video, #loop video {
+        background-repeat: no-repeat;
+        background-position: 0 0;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+      }
+      #cap video {
+        background-image: url('../assets/images/alt_homepage.png');
+      }
+      #loop video {
+        background-image: url('../assets/images/loop_alt.png');
+      }
+      #poster {
+        display: none;
+      }
+      #poster, #loop {
+        position: relative;
+      }
+      #poster {
+        background: rgba(0, 0, 0, 1);
+        overflow: hidden;
+      }
+      #poster img, #loop img {
+        filter: blur(4px);
+        height: auto;
+        -webkit-filter: blur(4px);
+        width: 100%;
+      }
+      .poster-container {
+        left: 0;
+        margin: 0;
+        padding: 0 5%;
+        position: absolute;
+        text-align: center;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 100%;
+      }
+      @media (max-width: 720px) {
+        #poster {
+          display: block !important; /* not sure where poster is used on the site elsewhere */
+        }
+        #cap,
+        #loop {
+          display: none;
+        }
+      }
+    </style>
+
+    <div id="cap">
+      <video id="bovid" on-ended="_onEnd" autoplay style="width:100%;max-width:100%;height:auto;">
+        <source type="video/mp4" id="bo_mp4">
+        <source type="video/webm" id="bo_webm">
+      </video>
+      <div id="videoTime" style="display: none;"></div>
+    </div>
+
+    <div id="loop" style="height: 0; overflow: hidden; position: relative; transform: rotateX(90deg);">
+      <video id="bgvid" loop autoplay>
+        <source type="video/mp4" id="loop_mp4">
+        <source type="video/webm" id="loop_webm">
+      </video>
+      <div class="poster-container">
+        <slot name="loop"></slot>
+      </div>
+    </div>
+
+    <div id="poster">
+      <img src="data:image/png;base64,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"/>
+      <div class="poster-container">
+        <slot name="poster"></slot>
+      </div>
+    </div>
+  </template>
+
+  <script>
+    class VideoLoop extends Polymer.Element {
+      static get is() { return 'video-loop'; }
+
+      static get properties() {
+        return {
+          // Hide content until component loaded (see main.css for mounted style)
+          mounted: {
+            type: Boolean,
+            value: true,
+            reflectToAttribute: true,
+          }
+        }
+      }
+
+      _onEnd(event) {
+        let loop = this.shadowRoot.querySelector('#loop');
+        if (loop) {
+          loop.removeAttribute('style');
+        } else {
+          console.warn('No element with selector \'#loop\' exists');
+        }
+
+        let bovid = this.shadowRoot.querySelector('#bovid');
+        if (bovid) {
+          bovid.style.display = 'none';
+        } else {
+          console.log('No element with selector \'#bovid\' exists');
+        }
+
+        let cap = this.shadowRoot.querySelector('#cap');
+        if (cap) {
+          cap.style.display = 'none';
+        } else {
+          console.log('No element with selector \'#cap\' exists')
+        }
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+        // Box vid: MP4
+        let bo_mp4 = this.shadowRoot.querySelector('#bo_mp4');
+        if (bo_mp4) {
+          bo_mp4.src = 'https://storage.googleapis.com/pint-site.appspot.com/videos/alt_homepage.mp4';
+        } else {
+          console.warn('No element with selector \'#bo_mp4\' exists');
+        }
+        // Box vid: WebM
+        let bo_webm = this.shadowRoot.querySelector('#bo_webm');
+        if (bo_webm) {
+          bo_webm.src = 'https://storage.googleapis.com/pint-site.appspot.com/videos/alt_homepage.webm';
+        } else {
+          console.warn('No element with selector \'#bo_webm\' exists');
+        }
+        // Loop vid: MP4
+        let loop_mp4 = this.shadowRoot.querySelector('#loop_mp4');
+        if (loop_mp4) {
+          loop_mp4.src = 'https://storage.googleapis.com/pint-site.appspot.com/videos/loop.mp4';
+        } else {
+          console.warn('No element with selector \'#loop_mp4\' exists');
+        }
+        // Loop vid: WebM
+        let loop_webm = this.shadowRoot.querySelector('#loop_webm');
+        if (loop_webm) {
+          loop_webm.src = 'https://storage.googleapis.com/pint-site.appspot.com/videos/loop.webm';
+        } else {
+          console.warn('No element with selector \'#loop_webm\' exists');
+        }
+      }
+    }
+
+    customElements.define(VideoLoop.is, VideoLoop);
+  </script>
+</dom-module>

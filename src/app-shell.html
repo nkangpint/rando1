@@ -1,0 +1,332 @@
+<link rel="import" href="bower_components/polymer/polymer-element.html">
+<link rel="import" href="bower_components/app-route/app-location.html">
+<link rel="import" href="bower_components/app-route/app-route.html">
+<link rel="import" href="bower_components/iron-iconset-svg/iron-iconset-svg.html">
+<link rel="import" href="mixins/anchor.html">
+<link rel="import" href="components/app-carousel.html">
+<link rel="import" href="components/lazy-image.html">
+<link rel="import" href="components/app-carousel-item.html">
+<link rel="import" href="components/employee-bio.html">
+<link rel="import" href="components/header-bar.html">
+<link rel="import" href="components/client-logo.html">
+<link rel="import" href="components/slide-out-nav.html">
+<link rel="import" href="components/slide-out-nav-trigger.html">
+<link rel="import" href="components/circle-icon.html">
+<link rel="import" href="components/ajax-form.html">
+<link rel="import" href="components/svg-symbols.html">
+
+<dom-module id="app-shell">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      /* Back to Top */
+      [top] {
+        bottom: 15px;
+        cursor: pointer;
+        position: fixed;
+        right: 15px;
+      }
+      [top]:after {
+        border: 16px solid transparent;
+        border-bottom-color: #c5d6de;
+        content: '';
+        display: block;
+      }
+      @media screen and (max-width: 768px) {
+        [top] { display: none; }
+      }
+    </style>
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - -->
+    <!-- ROUTER                                        -->
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - -->
+    <app-location route="{{ route }}"></app-location>
+    <app-route
+      route="{{ route }}"
+      pattern="/:page"
+      data="{{ routeData }}"
+      tail="{{ subroute }}">
+    </app-route>
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - -->
+    <!-- LIGHT DOM CONTENT                             -->
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - -->
+    <!-- Content from index.html slotted here -->
+    <slot></slot>
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - -->
+    <!-- BACK TO TOP                                   -->
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - -->
+    <a href="#top" top></a>
+
+  </template>
+
+  <script>
+    class AppShell extends Polymer.mixinBehaviors([
+      Polymer.anchor,
+      Polymer.ResolveUrl,
+    ], Polymer.Element) {
+      static get is() {
+        return 'app-shell';
+      }
+
+      static get properties() {
+        return {
+          currentUrl: {
+            type: String,
+            readonly: true
+          },
+          // If you go to /app-shell, it will set the mode to 'shell'
+          // Otherwise, normal load will set mode to 'standard'
+          // See `addContentToPartial()` that protects against fetching the current page again if requested
+          mode: {
+            type: String
+          }
+        };
+      }
+
+      static get observers() {
+        return [
+          'routeChanged(route)'
+        ]
+      }
+
+      // ----------------------------------
+      // INIT
+      // ----------------------------------
+
+      ready() {
+        super.ready();
+        this.set('currentUrl', this.route.path);
+
+        // Store <body>
+        this.body = document.querySelector('body');
+        // Test if WebP supported
+        this._testWebP(this.body);
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+        // Remove [unresolved] attribute
+        this.removeAttribute('unresolved');
+
+        // Store DOM elements
+        this.$description = document.head.querySelector('meta[name="description"]');
+        this.$contentWrapper = document.querySelector('main');
+
+        // Run methods on app-shell install/connection
+        this.initAppShell();
+      }
+
+      // APP SHELL INIT
+      // ----------------------------------
+
+      /**
+       * @description Run methods on initial load or hard-refresh once <app-shell> is connected and ready
+       */
+      initAppShell() {
+        // Hydrate newly-appended DOM elements
+        this._hydrateContentOnload();
+
+        // Scroll the browser to the top when you click an internal site-page <a> tag
+        // Doing this instead of scrolling on route change preserves browser back/forward page scroll position
+        // NOTE: You may need to tweak this to your needs
+        this._initATagClickScroll();
+
+        // Create custom events that are broadcast to internal app components
+        //this._broadcastEventsAppWide();
+      }
+
+
+      // ----------------------------------
+      // PUBLIC METHODS
+      // ----------------------------------
+
+      /**
+       * @description Actions to do on route change
+       * @param {Object} route - The current route object
+       */
+      routeChanged(route) {
+        // Close any open mobile navs
+        this._closeOpenNavs();
+
+        // Set <slide-out-nav>'s active <a> for styling
+        const SLIDE_OUT_NAV = document.querySelector('slide-out-nav');
+        if (SLIDE_OUT_NAV) {
+          customElements.whenDefined('slide-out-nav').then(() => SLIDE_OUT_NAV.activateNavItem(route.path));
+        }
+
+        // Do not load a partial if a hard refresh or going to appShell diagnostic endpoint
+        if (route.path === 'undefined' || route.path === '/app-shell') return;
+
+        // LOAD PARTIAL PAGE
+        // Ideally we would only check for this.mode === 'shell', but on local host, this.mode is always 'standard' :<
+        // Only load a partial when the App Shell intercepts a route change (does not happen on hard refresh)
+        if (this.currentUrl || this.mode === 'shell') {
+          // Fetch the requested page and load to partial.html template
+          const XHR = new XMLHttpRequest();
+          // We add the partial query param to let the server know we don't
+          // want all the content, just the new stuff.
+          XHR.open('GET', `pages${route.path}`, true);
+          XHR.responseType = 'document';
+          XHR.send();
+          // On request return, run 'completed' fn
+          XHR.addEventListener('load', this.addContentToPartial.bind(this));
+        }
+      }
+
+      /**
+       * @description Once the ajax request for the new page has returned successfully,
+       * add the returned page data to the partial template.
+       * See `routeChanged()` for the call.
+       * @param {Object} event - The 'load' event
+       */
+      addContentToPartial(event) {
+        // This protects against redirects
+        // On App Engine only (not localhost):
+        // The first route change (the 'from' URL), the mode is 'shell'
+        // The second route change (the 'to' URL), the mode is 'standard'
+        // Without this check, redirects load 2 app shells (one for each of the 2 route changes)
+
+        // Get the new page's title, description, and body content
+        // from the .html file's Jinja template blocks, ex: {% block content %}
+        // NOTE: RESPONSE is the document fragment of the partial page
+        const RESPONSE = event.currentTarget.response;
+        const CONTENT = RESPONSE.body;
+        const DESCRIPTION = RESPONSE.querySelector('[name="description"]').getAttribute('content');
+
+        // For each component loaded into <app-shell> via the <link rel="import"> call
+        // Import them into Polymer
+        //const $CUSTOM_ELEMENTS = RESPONSE.querySelectorAll('link[rel="import"]');
+        //$CUSTOM_ELEMENTS.forEach(el => Polymer.importHref(el.getAttribute('href')));
+
+        // Set the new page title and description
+        document.title = RESPONSE.title;
+        if (this.$description) this.$description.setAttribute('content', DESCRIPTION);
+
+        // Remove the existing partial-page content
+        // TODO: Determine if we should swap out all the content or just the wrapper stuff
+        this.$contentWrapper.innerHTML = '';
+
+        // Create new DOM fragment to convert the returned, content data-string into DOM
+        const DOM_FRAGMENT = document.createDocumentFragment();
+        while (CONTENT.firstChild) {
+          DOM_FRAGMENT.appendChild(CONTENT.firstChild);
+        }
+
+        // Add DOM Fragment to the partial template
+        this.$contentWrapper.appendChild(document.importNode(DOM_FRAGMENT, true));
+
+        // HYDRATE NEW DOM ELEMENTS
+        // Hydrate partial page's newly-appended DOM elements
+        this._hydrateContentOnload();
+
+        // Ensure async processes (dom append, etc.) run synchronously
+        // See https://goo.gl/sxTRNv, search for Polymer.flush()
+        Polymer.flush();
+
+        // Track the pageview in Piwik
+        // NOTE: To enable, also uncomment the Piwik init code in default.html
+        //this._trackPageview();
+
+        // Update the current URL
+        this.set('currentUrl', this.route.path);
+      }
+
+      // ----------------------------------
+      // PRIVATE METHODS
+      // ----------------------------------
+
+      /**
+       * @description Broadcast events to the app. To listen from another component,
+       * query select <app-shell> and then bind an event listener to that custom event.
+       * Example: In component, do: this.$appShell.addEventListener('customKeyUp', ....)
+       * See: https://goo.gl/hcwkW2
+       */
+      _broadcastEventsAppWide() {
+        // KEYUP
+        document.addEventListener('keyup', e => {
+          this.keypress = e.which;
+          this.dispatchEvent(new CustomEvent('customKeyUp'));
+        }, { passive: true });
+      }
+
+      /**
+       * @description Close any open mobile <slide-out-nav> instances on route change
+       * @private
+       */
+      _closeOpenNavs() {
+        const OPEN_NAVS = [...document.querySelectorAll('slide-out-nav[active]')];
+        OPEN_NAVS.forEach(nav => nav.close());
+      }
+
+      /**
+       * @description Hydrate newly-appended DOM elements
+       * @private
+       */
+      _hydrateContentOnload() {
+        // HIGHLIGHT.JS
+        // CSS and JS cdn lib code init in vendor.html
+        // We're 'hydrating' any found <pre><code> blocks in the newly-added DOM of the page partial
+        //const CODE_BLOCKS = document.querySelectorAll('pre code');
+        //CODE_BLOCKS.forEach(block => hljs.highlightBlock(block));
+      }
+
+
+      /**
+       * @description Scroll the browser to the top when you click an internal site-page <a> tag.
+       * Doing this instead of scrolling on route change preserves browser back/forward page scroll position
+       * @private
+       */
+      _initATagClickScroll() {
+        document.addEventListener('click', e => {
+          // Do nothing if an <a> tag is not clicked
+          if (e.target.nodeName !== 'A') return;
+          // If <a> tag points to an internal site page, scroll the window
+          if (e.target.hostname === location.hostname) window.scrollTo(0, 0);
+        })
+      }
+
+      /**
+       * @description Test if WebP image format supported; if it is, add 'webp' css class to <body>
+       * @private
+       */
+      _testWebP(target) {
+        testWebP(notify);
+        function testWebP(callback) {
+          // Create tiny .webp image to test for
+          const WEBP = new Image();
+          WEBP.src = 'data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACyAgCdASoCAAIALmk0mk0iIiIiIgBoSygABc6WWgAA/veff/0PP8bA//LwYAAA';
+          WEBP.onload = WEBP.onerror = () => callback(WEBP.height === 2);
+        }
+        function notify(supported) {
+          // Add css class to <body>
+          const WEBP_CSS_CLASS = supported ? 'webp' : 'no-webp';
+          target.classList.add(WEBP_CSS_CLASS);
+        }
+      }
+
+      /**
+       * @description Send track event to Piwik
+       * @private
+       */
+      _trackPageview() {
+        // Update the referrer
+        _paq.push(['setReferrerUrl', this.currentUrl]);
+        // Set the new URL
+        _paq.push(['setCustomUrl', this.route.path]);
+        // Set the new title
+        _paq.push(['setDocumentTitle', document.title]);
+        // Actually track the pageview in Piwik
+        _paq.push(['trackPageView']);
+        // Enable link tracking for the new content
+        _paq.push(['enableLinkTracking']);
+      }
+
+    }
+
+    customElements.define(AppShell.is, AppShell);
+  </script>
+</dom-module>

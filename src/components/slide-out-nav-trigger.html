@@ -1,0 +1,58 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<dom-module id="slide-out-nav-trigger">
+  <template>
+    <style>
+      :host {}
+      :host(.header__nav-open) {
+        display: block !important;
+      }
+      :host(.header__nav-open) #trigger {
+        align-items: center;
+        border: none;
+        color: white;
+        cursor: pointer;
+        display: flex;
+        font-size: 0.8125rem;
+        font-weight: 700;
+        height: 100%;
+        justify-content: center;
+        line-height: 1;
+        position: absolute;
+        right: 0;
+        text-transform: uppercase;
+        top: 50%;
+        transform: translateY(-50%);
+        user-select: none;
+      }
+      :host(.header__nav-open) .wrapper {
+        background: hsl(199, 100%, 29%);
+        padding: .5rem;
+      }
+      @media screen and (min-width: 768px) {
+        :host(.header__nav-open) {
+          display: none !important;
+        }
+      }
+    </style>
+
+    <div id="trigger" on-click="_onTriggerTap">
+      <div class="wrapper">Menu&nbsp;<span>&#x276E;</span></div>
+    </div>
+  </template>
+
+  <script>
+    class SlideOutNavTrigger extends Polymer.Element {
+      static get is() { return 'slide-out-nav-trigger'; }
+
+      _onTriggerTap() {
+        const slideOutNav = document.querySelector('slide-out-nav');
+        if (slideOutNav) {
+          slideOutNav.open();
+        }
+      }
+    }
+
+    customElements.define(SlideOutNavTrigger.is, SlideOutNavTrigger);
+  </script>
+</dom-module>

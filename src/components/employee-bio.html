@@ -1,0 +1,143 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<dom-module id="employee-bio">
+  <template>
+    <style>
+      :host {
+        display: flex;
+        height: 100%;
+        width: 100%;
+      }
+      #info {
+        text-align: left;
+      }
+      #name,
+      #title {
+        display: block;
+        margin-bottom: 10px;
+      }
+      #name {
+        font-size: 30px;
+        line-height: 1;
+      }
+      #title {
+        color: hsl(8, 49%, 51%);
+        font-style: italic;
+      }
+      a {
+        color: hsl(199, 100%, 34%);
+        text-decoration: none;
+      }
+      a:after {
+        content: '\2192';
+      }
+      #linked-in-icon {
+        vertical-align: middle;
+        margin-right: 10px;
+      }
+      @media screen and (min-width:768px) {
+        #info {
+          margin: 0;
+          padding: 15px 0 0 30px;
+          box-sizing: border-box;
+        }
+        #picture,
+        #info {
+          height: 100%;
+          flex: 1;
+        }
+      }
+      @media screen and (max-width:768px) {
+        :host {
+          flex-direction: column;
+        }
+        #info {
+          margin: 15px 15px 0;
+          text-align: center;
+          height: auto;
+        }
+        #picture {
+          height: 100%;
+          flex: inherit;
+        }
+        #details {
+          display: none;
+        }
+      }
+    </style>
+
+    <lazy-image
+      id="picture"
+      preload
+      fade
+      sizing="contain"
+      src="[[ picture ]]"
+      alt="[[ alttext ]]"
+      >
+    </lazy-image>
+
+    <div id="info">
+      <span id="name">[[ name ]]</span>
+      <span id="title">[[ title ]]</span>
+      <div id="details">
+        <slot></slot>
+      </div>
+      <p>
+        <a
+          hidden$="[[ linkedInHidden ]]"
+          href="[[ linkedIn ]]"
+          target="_blank"
+          rel="noopener">
+          <img id="linked-in-icon" src="assets/images/linked-in-icon--30x21.png" alt="">Connect with [[ _computeFirstName(name) ]] on LinkedIn
+        </a>
+        &nbsp;
+      </p>
+    </div>
+  </template>
+
+  <script>
+    class EmployeeBio extends Polymer.Element {
+      static get is() { return 'employee-bio'; }
+
+      static get properties() {
+        return {
+          picture: {
+            type: String,
+          },
+
+          alttext: {
+            type: String,
+          },
+
+          name: {
+            type: String
+          },
+
+          title: {
+            type: String
+          },
+
+          linkedIn: {
+            type: String,
+            value: ''
+          },
+
+          linkedInHidden: {
+            type: Boolean,
+            computed: '_computeLinkedInHidden(linkedIn)'
+          }
+        }
+      }
+
+      _computeLinkedInHidden(value) {
+        return value.length === 0;
+      }
+
+      _computeFirstName(name) {
+        return name.split(' ')[0];
+      }
+    }
+
+    customElements.define(EmployeeBio.is, EmployeeBio);
+  </script>
+</dom-module>

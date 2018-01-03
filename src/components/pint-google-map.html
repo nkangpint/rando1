@@ -1,0 +1,191 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../libraries/google-maps-script.html">
+
+<dom-module id="pint-google-map">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      #target {
+        height: 100%;
+      }
+    </style>
+
+    <div id="target"></div>
+  </template>
+
+  <script>
+    class PintGoogleMap extends Polymer.Element {
+      static get is() { return 'pint-google-map'; }
+
+      static get properties() {
+        return {
+
+          lat: {
+            type: Number
+          },
+
+          lng: {
+            type: Number
+          },
+
+          zoom: {
+            type: Number
+          },
+
+          panControl: {
+            type: Boolean,
+            value: false
+          },
+
+          zoomControl: {
+            type: Boolean,
+            value: false
+          },
+
+          mapTypeControl: {
+            type: Boolean,
+            value: false
+          },
+
+          scaleControl: {
+            type: Boolean,
+            value: false
+          },
+
+          streetViewControl: {
+            type: Boolean,
+            value: false
+          },
+
+          overviewMapControl: {
+            type: Boolean,
+            value: false
+          },
+
+          scrollwheel: {
+            type: Boolean,
+            value: false
+          }
+        }
+      }
+
+      _getStyles() {
+        return [{
+          "featureType": "water",
+          "elementType": "geometry",
+          "stylers": [{ "color": "#A0D9F4" }]
+        }, {
+          "featureType": "landscape.man_made",
+          "elementType": "geometry",
+          "stylers": [{ "color": "#F9F5EC" }]
+        }, {
+          "featureType": "landscape.natural",
+          "elementType": "geometry",
+          "stylers": [{ "color": "#BCE5A9" }]
+        }, {
+          "featureType": "landscape.natural.terrain",
+          "elementType": "geometry",
+          "stylers": [{ "visibility": "off" }]
+        }, {
+          "featureType": "poi.park",
+          "elementType": "geometry",
+          "stylers": [{ "color": "#BCE5A9" }]
+        }, {
+          "featureType": "poi",
+          "elementType": "labels",
+          "stylers": [{ "visibility": "off" }]
+        }, {
+          "featureType": "poi.school",
+          "elementType": "geometry",
+          "stylers": [{ "color": "#BCE5A9" }]
+        }, {
+          "featureType": "poi.medical",
+          "elementType": "geometry",
+          "stylers": [{ "color": "#fbd3da" }]
+        }, { "featureType": "poi.business", "stylers": [{ "visibility": "off" }] }, {
+          "featureType": "road",
+          "elementType": "geometry.stroke",
+          "stylers": [{ "visibility": "on" }]
+        }, {
+          "featureType": "road",
+          "elementType": "labels",
+          "stylers": [{ "visibility": "on" }]
+        }, {
+          "featureType": "road.highway",
+          "elementType": "geometry.fill",
+          "stylers": [{ "color": "#ffe15f" }]
+        }, {
+          "featureType": "road.highway",
+          "elementType": "geometry.stroke",
+          "stylers": [{ "color": "#efd151" }]
+        }, {
+          "featureType": "road.arterial",
+          "elementType": "geometry.fill",
+          "stylers": [{ "color": "#FFFDE3" }]
+        }, {
+          "featureType": "road.arterial",
+          "elementType": "geometry.stroke",
+          "stylers": [{ "color": "#FFD168" }]
+        }, {
+          "featureType": "road.local",
+          "elementType": "geometry.fill",
+          "stylers": [{ "color": "#FFFFFF" }]
+        }, {
+          "featureType": "transit.station.airport",
+          "elementType": "geometry.fill",
+          "stylers": [{ "color": "#cfb2db" }]
+        }, {
+          "featureType": "transit.station.bus",
+          "stylers": [{ "visibility": "off" }]
+        }];
+      }
+
+      _createMap() {
+        return new google.maps.Map(this.$.target, {
+          center: {
+            lat: this.lat,
+            lng: this.lng
+          },
+          zoom: this.zoom,
+          panControl: this.panControl,
+          zoomControl: this.zoomControl,
+          mapTypeControl: this.mapTypeControl,
+          scaleControl: this.scaleControl,
+          streetViewControl: this.streetViewControl,
+          overviewMapControl: this.overviewMapControl,
+          scrollwheel: this.scrollwheel,
+          MapTypeId: google.maps.MapTypeId.ROADMAP,
+          styles: this._getStyles()
+        });
+      }
+
+      _getPintMarker() {
+        return {
+          url: 'assets/images/pint-marker.png',
+          size: new google.maps.Size(38, 66),
+          origin: new google.maps.Point(0, 0),
+          anchor: new google.maps.Point(24, 70)
+        }
+      }
+
+      _addPintMarker() {
+        return new google.maps.Marker({
+          position: { lat: 32.801665, lng: -117.2315397 },
+          map: this.map,
+          title: 'PINT',
+          icon: this._getPintMarker()
+        });
+      }
+
+      ready() {
+        super.ready();
+        this.map = this._createMap();
+        this._addPintMarker();
+      }
+    }
+
+    customElements.define(PintGoogleMap.is, PintGoogleMap);
+  </script>
+</dom-module>

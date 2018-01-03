@@ -1,0 +1,27 @@
+<script>
+  Polymer.lazySrc = {
+    ready() {
+      // NOTE: this.shadowRoot is not available when 'connectedCallback()' is run; using ready() instead
+    },
+
+    // ----------------------------------
+    // HELPER METHODS
+    // ----------------------------------
+
+    /**
+     * Set 'src' attribute with the value of the 'data-src' attribute (if found)
+     * @param {Object} el - The element to toggle the class on
+     * @private
+     */
+    _setSrc(el) {
+      if (el) {
+        const dataSrc = el.getAttribute('data-src');
+        if (dataSrc) {
+          el.src = dataSrc;
+          el.removeAttribute('data-src');
+        }
+      }
+    },
+
+  };
+</script>

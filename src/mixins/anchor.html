@@ -1,0 +1,60 @@
+<script>
+  Polymer.anchor = {
+    ready() {
+      // NOTE: this.shadowRoot is not available when 'connectedCallback()' is run; using ready() instead
+
+      // Remove #top hash on reload
+      if (self.location.hash === '#top') {
+        self.location.hash = '';
+        history.pushState('','',self.location.origin);
+      }
+
+      // Send anchor link
+      const anchorLink = this.shadowRoot.querySelectorAll('a[href^="#"]');
+      anchorLink.forEach(anchor => {
+        anchor.addEventListener('click', e => this._sendAnchor(e));
+      });
+    },
+
+    // ----------------------------------
+    // HELPER METHODS
+    // ----------------------------------
+
+    _sendAnchor(e) {
+      const parents = e.composedPath();
+      let anchorTarget;
+      let parentAttr;
+      let target;
+      if (parents.length) {
+        parents.forEach(parent => {
+          // Set target if parent has href link to anchor
+          if (!target) {
+            parentAttr = parent.attributes;
+            target = (
+              parentAttr &&
+              parentAttr.href &&
+              parentAttr.href.value &&
+              parentAttr.href.value.charAt(0) === '#'
+            ) ? parentAttr.href.value : null;
+          }
+          // If target is in a shadow root, target it differently
+          if (parent.shadowRoot) {
+            anchorTarget = parent.shadowRoot.getElementById(target);
+          }
+          // Otherwise, check if parent can use querySelector (normally fails on window)
+          else if (typeof parent.querySelector === 'function') {
+            anchorTarget = parent.querySelector(target);
+          }
+          // Scroll viewport
+          if (anchorTarget) anchorTarget.scrollIntoView();
+          // If target is 'top', remove hash from location
+          if (target === '#top') {
+            e.preventDefault();
+            history.replaceState('','',self.location.pathname);
+          }
+        });
+      }
+    }
+
+  };
+</script>

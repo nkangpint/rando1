@@ -1,0 +1,95 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<dom-module id="ajax-form-error">
+    <template>
+        <style>
+            :host {
+                background: #c30;
+                bottom: 0;
+                box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.3);
+                box-sizing: border-box;
+                color: white;
+                font-size: 0.9rem;
+                line-height: 1.3rem;
+                left: 50%;
+                max-width: 400px;
+                position: fixed;
+                padding: 1rem 4rem 1rem 1rem;
+                transition: 0.2s transform;
+                transform: translate(-50%, 150%);
+                width: 90%;
+            }
+            :host([active]) {
+                transform: translate(-50%, 0px);
+            }
+
+            #close {
+                background: none;
+                border: none;
+                color: white;
+                cursor: pointer;
+                font-weight: bold;
+                letter-spacing: -0.2px;
+                margin: 0;
+                padding: 0;
+                position: absolute;
+                right: 1rem;
+                text-transform: uppercase;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+            #close:focus {
+                outline: none;
+            }
+        </style>
+
+        <div id="message">[[ message ]]</div>
+        <button id="close" on-click="_close">Close</button>
+    </template>
+
+    <script>
+        class AjaxFormError extends Polymer.Element {
+            static get is() { return 'ajax-form-error'; }
+
+            static get properties() {
+                return {
+                    message: {
+                        type: String
+                    },
+                    active: {
+                        type: Boolean,
+                        value: false,
+                        reflectToAttribute: true,
+                        observer: '_activeChanged'
+                    },
+                    timeout: {
+                        type: Number,
+                        value: 3000,
+                        reflectToAttribute: true
+                    }
+                }
+            }
+
+            disconnectedCallback() {
+                super.disconnectedCallback();
+                clearTimeout(this._timeout);
+            }
+
+            _activeChanged(newValue, oldValue) {
+                if (newValue === true && oldValue === false) {
+                    this._timeout = setTimeout(() => {
+                        this.active = false;
+                        clearTimeout(this._timeout);
+                    }, this.timeout);
+                }
+            } 
+
+            _close() {
+                this.active = false;
+                clearTimeout(this._timeout);
+            }
+        }
+
+        customElements.define(AjaxFormError.is, AjaxFormError);
+    </script>
+</dom-module>

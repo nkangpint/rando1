@@ -1,0 +1,42 @@
+<script>
+  Polymer.toggleClass = {
+    ready() {
+      // NOTE: this.shadowRoot is not available when 'connectedCallback()' is run; using ready() instead
+    },
+
+    // ----------------------------------
+    // HELPER METHODS
+    // ----------------------------------
+
+    /**
+     * Explicitly add/remove target CSS class
+     * @param {Object} el - The element to toggle the class on
+     * @param {String} className - The CSS class name to toggle
+     * @private
+     */
+    _mixinToggleClass(el, className) {
+      el.classList.toggle(className);
+    },
+
+    /**
+     * Explicitly add/remove target CSS class
+     * @param {Object} el - The element to toggle the class on
+     * @param {String} className - The CSS class name to toggle
+     * @param {Number} threshold - The scroll position threshold
+     * @private
+     */
+    _mixinThresholdClass(el, className, threshold) {
+      // Add class
+      if (self.scrollY > threshold) {
+        el.classList.add(className);
+      }
+      // Remove class (if found on 'this' element)
+      else {
+        if (el.classList.contains(className)) {
+          el.classList.remove(className);
+        }
+      }
+    },
+
+  };
+</script>

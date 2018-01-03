@@ -1,0 +1,73 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<dom-module id="header-bar">
+  <template>
+    <style>
+      :host {
+        user-select: none;
+      }
+      :host(.header-hide) {
+        display: none;
+      }
+    </style>
+
+    <slot></slot>
+  </template>
+
+  <script>
+    class HeaderBar extends Polymer.Element {
+      static get is() { return 'header-bar'; }
+
+      static get properties() {
+        return {}
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+
+        // Vars
+        this.hideNavClass = 'header-hide';
+        this.showNavClass = 'header-show';
+        this.header = this;
+        this.limitTablet = 768;
+        this.navBarScrollAction = this._toggleNavBar.bind(this);
+        this.prevPos = 0;
+
+        this._scrollNavBar();
+      }
+
+      // ----------------------------------
+      // METHODS
+      // ----------------------------------
+
+      /**
+       * Set active nav item on scroll if on a device width greater than limit
+       * Note: Had to bind 'this' otherwise inside _checkAnchor, 'this' will be window and not this component
+       * @private
+       */
+      _scrollNavBar() {
+        const event = window.outerWidth<this.limitTablet ? 'addEventListener' : 'removeEventListener';
+        window[event]('scroll', this.navBarScrollAction, { passive: true });
+      }
+
+      /**
+       * Show or hide header bar depending on scroll direction (mobile)
+       * @private
+       */
+      _toggleNavBar() {
+        if (this.prevPos<110 || this.prevPos>document.body.scrollTop) {
+          this.header.classList.remove(this.hideNavClass);
+          this.header.classList.add(this.showNavClass);
+        }
+        else {
+          this.header.classList.remove(this.showNavClass);
+          this.header.classList.add(this.hideNavClass);
+        }
+        this.prevPos = document.body.scrollTop;
+      }
+
+    }
+
+    customElements.define(HeaderBar.is, HeaderBar);
+  </script>
+</dom-module>

@@ -1,0 +1,11 @@
+dist/
+firebase.json
+.firebaserc
+node_modules/
+bower_components/
+.vscode/
+.DS_Store
+yarn-error.log
+npm-debug.log
+package-lock.json
+

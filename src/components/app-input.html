@@ -1,0 +1,46 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<dom-module id="app-input">
+  <template>
+    <p>My name is [[ _formatName(name) ]]</p>
+    <input type="text" value="{{ name::input }}">    
+  </template>
+
+  <script>
+    class AppInput extends Polymer.Element {
+      static get is() { return 'app-input'; }
+
+      static get properties() {
+        return {
+          name: {
+            type: String,
+            notify: true,
+            observer: '_nameChanged'
+          },
+          number: {
+            type: Number
+          }
+        }
+      }
+
+      _nameChanged(newName, oldName) {
+        //console.log(`${this.number}'s new name is ${newName}`);
+      }
+
+      _formatName(name) {
+        return name.split('').join('-');
+      }
+
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        //super.connectedCallback();
+        this.number = Math.random();
+      }
+    }
+
+    customElements.define(AppInput.is, AppInput);
+  </script>
+</dom-module>

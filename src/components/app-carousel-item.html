@@ -1,0 +1,29 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<dom-module id="app-carousel-item">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      div {
+        height: 100%;
+      }
+      div > ::slotted(div) {
+        height: 100%;
+      }
+    </style>
+
+    <div>
+      <slot></slot>
+    </div>
+  </template>
+
+  <script>
+    class AppCarouselItem extends Polymer.Element {
+      static get is() { return 'app-carousel-item'; }
+    }
+
+    customElements.define(AppCarouselItem.is, AppCarouselItem);
+  </script>
+</dom-module>

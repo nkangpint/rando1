@@ -1,0 +1,33 @@
+<script>
+  Polymer.scrollLimiter = {
+    ready() {
+      // NOTE: this.shadowRoot is not available when 'connectedCallback()' is run; using ready() instead
+
+      this._initLimiter();
+    },
+
+    // ----------------------------------
+    // HELPER METHODS
+    // ----------------------------------
+
+    /**
+     * Run limiter on ready. Find targets and toggle disabled class based on current scroll state
+     * @private
+     */
+    _initLimiter() {
+      const disabledClass = 'disabled';
+      let targets = this.querySelectorAll('.scroll-limiter');
+      let scrollInt;
+      self.addEventListener('scroll', e => {
+        // Disable all targets while scrolling
+        targets.forEach(target => target.classList.add(disabledClass));
+        self.clearTimeout(scrollInt);
+        scrollInt = setInterval(() => {
+          targets.forEach(target => target.classList.remove(disabledClass));
+          self.clearTimeout(scrollInt);
+        }, 300);
+      });
+    },
+
+  };
+</script>

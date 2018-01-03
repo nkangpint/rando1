@@ -1,0 +1,130 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/polymer/lib/utils/flattened-nodes-observer.html">
+<link rel="import" href="ajax-form-error.html">
+
+<dom-module id="ajax-form">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+        </style>
+
+        <slot id="form"></slot>
+
+        <ajax-form-error id="error"></ajax-form-error>
+    </template>
+
+    <script>
+        class AjaxForm extends Polymer.Element {
+            static get is() { return 'ajax-form'; }
+
+            static get properties() {
+                return {
+                    redirect: {
+                        type: String
+                    },
+                    piwikGoalId: {
+                        type: Number
+                    }
+                }
+            }
+
+            connectedCallback() {
+                super.connectedCallback();
+                this._observe();
+                this._error = this.shadowRoot.querySelector('#error');
+            }
+
+            disconnectedCallback() {
+                super.disconnectedCallback();
+                this._observer.disconnect();
+                clearTimeout(this._resetValidity);
+            }
+
+            _observe() {
+                const form = this.shadowRoot.querySelector('#form');
+                this._observer = new Polymer.FlattenedNodesObserver(form, (info) => {
+                    let index = 0;
+                    while (!this._form && index < info.addedNodes.length) {
+                        if (info.addedNodes[index].tagName === 'FORM') {
+                            this._form = info.addedNodes[index];
+                        } else {
+                            index += 1;
+                        }
+                    }
+                    if (this._form !== null) {
+                        let toDisable = this._form.querySelectorAll('fieldset');
+                        if (toDisable.length === 0) {
+                            toDisable = this._form.querySelectorAll('input, textarea, select, button');
+                        }
+                        this._toDisable = Array.from(toDisable);
+                    } else {
+                        this._toDisable = [];
+                    }
+                    this._init();
+                });
+            }
+
+            _init() {
+                if (this._form === null) {
+                    this.url = null;
+                    this.method = null;
+                } else {
+                    this._form.addEventListener('submit', this._submit.bind(this));
+                    this.url = this._form.getAttribute('action');
+                    this.method = this._form.getAttribute('method');
+                }
+            }
+
+            _disableForm() {
+                this._toDisable.forEach((node) => node.disabled = true);
+            }
+
+            _enableForm() {
+                this._toDisable.forEach((node) => node.disabled = false);
+            }
+
+            _submit(event) {
+                event.preventDefault();
+                // First, reset the invalid state
+                this._error.active = false;
+                //this.valid = true;
+                // Next, make the formdata
+                const formData = new FormData(this._form);
+                // Then, disable the form
+                this._disableForm();
+                // Now, create the XHR request
+                const xhr = new XMLHttpRequest();
+                xhr.addEventListener('readystatechange', this._readyStateChange.bind(this));
+                xhr.open(this.method, this.url, true);
+                xhr.send(formData);
+            }
+
+            _readyStateChange(event) {
+                const xhr = event.currentTarget;
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    this._error.active = false;
+                    this._form.innerHTML = xhr.responseText;
+                    this._trackPiwikGoal();
+                } else if (xhr.readyState === 4 && xhr.status >= 400) {
+                    this._enableForm();
+                    this._error.message = xhr.responseText;
+                    this._error.active = true;
+                }
+            }
+
+            _trackPiwikGoal() {
+                // Early exit
+                if (this.piwikGoalId === null) return;
+                try {
+                    _paq.push(['trackGoal', this.piwikGoalId]);
+                } catch(err) {
+                    console.error(err);
+                }
+            }
+        }
+
+        customElements.define(AjaxForm.is, AjaxForm);
+    </script>
+</dom-module>

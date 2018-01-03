@@ -1,0 +1,81 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<dom-module id="contact-form">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      ::slotted(form-field) {
+        background: #fafafa;
+        border: 1px solid #e0e0e0;
+        padding: 1rem;
+        width: 100%;
+      }
+      button[type="submit"] {
+        background: #559cbe;
+        border: none;
+        color: white;
+        font-size: 1rem;
+        min-width: 10rem;
+        padding: 0.5rem 1rem;
+        text-transform: uppercase;
+      }
+      button[type="submit"]:hover {
+        background: #6da9c7;
+      }
+    </style>
+
+    <form name="contact" id="contact" method="post" action="/contact-action">
+        <fieldset>
+          <legend class="desktop--hide">Please fill out your information and submit</legend>
+          <div class="field full-name">
+            <label for="field_title">*Full Name:</label>
+            <input type="text" name="field_title" id="field_title" pint-autofocus required>
+          </div>
+          <div class="field">
+            <label for="field_phone">Phone Number:</label>
+            <input type="text" id="field_phone" name="field_phone">
+          </div>
+          <div class="field">
+            <label for="field_email">*Email Address:</label>
+            <input type="email" id="field_email" name="field_email" required>
+          </div>
+          <div class="field">
+            <label for="field_userComment" class="top">*How can we help?</label>
+            <textarea id="field_userComment" name="field_userComment" required></textarea>
+          </div>
+          <div class="field check offset">
+            <label>
+              <input type="checkbox" name="field_yesnewsletter" id="field_yesnewsletter" value="accept" checked>
+              <span>Sign me up for email updates</span>
+            </label>
+          </div>
+        </fieldset>
+        <div class="field offset">
+          <button type="submit" name="contactBtn" class="btn btn-mobile--full margin-top__small">Contact</button>
+        </div>
+      </form>
+  </template>
+
+  <script>
+    class ContactForm extends Polymer.Element {
+      static get is() { return 'contact-form'; }
+
+      constructor() {
+        super();
+      }
+
+      _onSubmit(event) {
+        event.preventDefault();
+        console.log('You submitted the form');
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+      }
+    }
+
+    customElements.define(ContactForm.is, ContactForm);
+  </script>
+</dom-module>

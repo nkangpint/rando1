@@ -1,0 +1,171 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<dom-module id="slide-out-nav">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      #close {
+        display: none;
+      }
+      @media screen and (max-width:767px) {
+        :host {
+          display: block;
+          height: 100%;
+          pointer-events: none;
+          position: fixed;
+          right: 0;
+          top: 0;
+          width: 100%;
+          z-index: 1000;
+        }
+        #close {
+          align-items: center;
+          color: white;
+          cursor: pointer;
+          display: flex;
+          font-size: 0.8125rem;
+          font-weight: 700;
+          height: 62px;
+          line-height: 1;
+          justify-content: center;
+          position: absolute;
+          right: 0;
+          text-transform: uppercase;
+          top: 0;
+          user-select: none;
+          z-index: 1;
+        }
+        #close .wrapper {
+          background: hsl(199, 100%, 29%);
+          padding: .5rem;
+        }
+        #shim {
+          background: rgba(0, 0, 0, 0.8);
+          height: 100%;
+          opacity: 0;
+          position: absolute;
+          top: 0;
+          width: 100%;
+          will-change: opacity;
+        }
+        #content {
+          background: white;
+          height: 100%;
+          max-width: 400px;
+          position: absolute;
+          right: 0;
+          top: 0;
+          transform: translateX(100%);
+          width: 80%;
+          will-change: transform;
+          z-index: 100;
+        }
+        :host([animating]) #shim {
+          transition: 0.15s opacity;
+        }
+        :host([animating]) #content {
+          transition: 0.3s transform;
+        }
+        :host([active]) {
+          pointer-events: auto;
+        }
+        :host([active]) #shim {
+          opacity: 1;
+        }
+        :host([active]) #content {
+          transform: translateX(0);
+        }
+      }
+    </style>
+
+    <div id="shim" on-click="close"></div>
+
+    <div id="content" on-transitionend="_onTransitionEnd">
+      <span id="close" on-click="close">
+        <span class="wrapper">
+          Close<span>&nbsp;&#x276F;</span>
+        </span>
+      </span>
+      <slot></slot>
+    </div>
+  </template>
+
+  <script>
+    class SlideOutNav extends Polymer.Element {
+      static get is() { return 'slide-out-nav'; }
+
+      static get properties() {
+        return {
+          active: {
+            type: Boolean,
+            reflectToAttribute: true,
+            value: false
+          },
+
+          animating: {
+            type: Boolean,
+            reflectToAttribute: true,
+            value: false
+          }
+        };
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+        this.activeClass = 'nav-open';
+        this.body = document.querySelector('body');
+        this.removeAttribute('unresolved');
+      }
+
+      open() {
+        this.animating = true;
+        requestAnimationFrame(() => {
+          this.active = true;
+          this._setBodyClass(true);
+        });
+      }
+
+      close() {
+        this.animating = true;
+        requestAnimationFrame(() => {
+          this.active = false;
+          this._setBodyClass(false);
+        });
+      }
+
+      _onTransitionEnd() {
+        this.animating = false;
+      }
+
+      /**
+       * Add an active class to <body> when the mobile slide-out nav is open (active)
+       * @param {Boolean} isActive - Is the slide-out mobile nav currently open or not
+       * @private
+       */
+      _setBodyClass(isActive) {
+        if (isActive) {
+          this.body.classList.add(this.activeClass);
+        }
+        else {
+          this.body.classList.remove(this.activeClass);
+        }
+      }
+
+      activateNavItem(href) {
+        const activeClass = 'header__nav-link--active';
+        const anchors = this.querySelectorAll('a');
+        for (let anchor of anchors) {
+          if (anchor.getAttribute('href') === href) {
+            anchor.classList.add(activeClass);
+          } else {
+            anchor.classList.remove(activeClass);
+          }
+        }
+      }
+    }
+
+    customElements.define(SlideOutNav.is, SlideOutNav);
+  </script>
+</dom-module>

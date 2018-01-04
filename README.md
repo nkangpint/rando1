@@ -13,6 +13,7 @@
 * nvm (node version manager)
 
 ### Environment Installation (macOS)
+* Note: If any of these fail, you probably need to re-run the command with sudo.
 
 1. Install nvm: `$ curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.0/install.sh | bash`
 
@@ -30,6 +31,9 @@
 6. Install yarn 
 `$ brew install yarn --without-node`
 
+7. Install bower
+`$ npm install -g bower`
+
 ## Development 
 
 1. Install all dependencies
@@ -37,8 +41,6 @@
 or
 `$ yarn install`
 This will install all npm dependencies including the pwa-build repo, which will handle all the build steps.
-
-
 
 2. Start development server
 `$ yarn 🔥`

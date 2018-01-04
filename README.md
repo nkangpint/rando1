@@ -6,6 +6,7 @@
 * Node >= 9.3.0
 * npm
 * yarn
+* bower
 * homebrew + xcode (macOS)
 
 ### Recommended

@@ -4,18 +4,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "cd src && bower install && cd .. && yarn install",
+    "start": "cd src && bower install && cd .. && npm run install",
     "build": "node node_modules/pwa-build build --config config/main.js --fb",
-    "build:dev": "yarn build",
+    "build:dev": "npm run build",
     "build:prod": "node node_modules/pwa-build build --config config/main.js --min --es5 --sw --sitemap --fb",
-    "dev": "yarn start && yarn build:dev && node node_modules/pwa-build dev --config config/main.js",
+    "dev": "npm run start && npm run build:dev && node node_modules/pwa-build dev --config config/main.js",
     "deploy": "npm run build:prod && firebase deploy",
-    "📦": "yarn install",
-    "🔥": "yarn dev"
+    "📦": "npm run install",
+    "🔥": "npm rundev"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "pwa-build": "git+ssh://git@gitlab.pint.com/pwa/pwa-build.git#0.0.2"  
+    "pwa-build": "git+ssh://git@gitlab.pint.com/pwa/pwa-build.git#0.0.2"
   }
 }

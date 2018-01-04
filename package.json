@@ -4,13 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "cd src && bower install && cd .. && npm run install",
+    "start": "cd src && bower install && cd .. && npm install",
     "build": "node node_modules/pwa-build build --config config/main.js --fb",
     "build:dev": "npm run build",
     "build:prod": "node node_modules/pwa-build build --config config/main.js --min --es5 --sw --sitemap --fb",
     "dev": "npm run start && npm run build:dev && node node_modules/pwa-build dev --config config/main.js",
     "deploy": "npm run build:prod && firebase deploy",
-    "📦": "npm run install",
+    "📦": "npm run start",
     "🔥": "npm run dev"
   },
   "author": "",

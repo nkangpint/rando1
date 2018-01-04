@@ -128,8 +128,8 @@
   resolved "https://registry.yarnpkg.com/@types/long/-/long-3.0.32.tgz#f4e5af31e9e9b196d8e5fca8a5e2e20aa3d60b69"
 
 "@types/node@*", "@types/node@^8.0.53":
-  version "8.5.3"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-8.5.3.tgz#5cf2fa867d4b663d14a60eaa345f81678c21c41c"
+  version "8.5.5"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-8.5.5.tgz#6f9e8164ae1a55a9beb1d2571cfb7acf9d720c61"
 
 JSONStream@^1.2.1:
   version "1.3.2"
@@ -3512,8 +3512,10 @@ p-is-promise@^1.1.0:
   resolved "https://registry.yarnpkg.com/p-is-promise/-/p-is-promise-1.1.0.tgz#9c9456989e9f6588017b0434d56097675c3da05e"
 
 p-limit@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/p-limit/-/p-limit-1.1.0.tgz#b07ff2d9a5d88bec806035895a2bab66a27988bc"
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/p-limit/-/p-limit-1.2.0.tgz#0e92b6bedcb59f022c13d0f1949dc82d15909f1c"
+  dependencies:
+    p-try "^1.0.0"
 
 p-locate@^2.0.0:
   version "2.0.0"
@@ -3526,6 +3528,10 @@ p-timeout@^2.0.1:
   resolved "https://registry.yarnpkg.com/p-timeout/-/p-timeout-2.0.1.tgz#d8dd1979595d2dc0139e1fe46b8b646cb3cdf038"
   dependencies:
     p-finally "^1.0.0"
+
+p-try@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/p-try/-/p-try-1.0.0.tgz#cbc79cdbaf8fd4228e13f621f2b1a237c1b207b3"
 
 package-json@^1.0.0:
   version "1.2.0"
@@ -3766,9 +3772,9 @@ punycode@^1.3.2, punycode@^1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-1.4.1.tgz#c0d5a63b2718800ad8e1eb0fa5269c84dd41845e"
 
-"pwa-build@git+ssh://git@gitlab.pint.com:pwa/pwa-build.git#0.0.1":
+"pwa-build@git+ssh://git@gitlab.pint.com/pwa/pwa-build.git#0.0.2":
   version "1.0.0"
-  resolved "git+ssh://git@gitlab.pint.com:pwa/pwa-build.git#2aaa532ef12a716defadb213f436388f9821e4de"
+  resolved "git+ssh://git@gitlab.pint.com/pwa/pwa-build.git#289de55556b4aa70a761b478bbd67861dab7d51f"
   dependencies:
     babel-core "^6.26.0"
     babel-plugin-external-helpers "^6.22.0"

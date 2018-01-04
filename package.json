@@ -11,11 +11,11 @@
     "dev": "npm run start && npm run build:dev && node node_modules/pwa-build dev --config config/main.js",
     "deploy": "npm run build:prod && firebase deploy",
     "📦": "npm run install",
-    "🔥": "npm rundev"
+    "🔥": "npm run dev"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "pwa-build": "git+ssh://git@gitlab.pint.com/pwa/pwa-build.git#0.0.2"
+    "pwa-build": "git+ssh://git@gitlab.pint.com/pwa/pwa-build.git#0.0.3"
   }
 }

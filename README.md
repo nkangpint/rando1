@@ -11,34 +11,39 @@
 ### Recommended
 * nvm (node version manager)
 
-### Environment Installation (macOS)
+## Getting started
+
+### 1. Gitlab setup
+Before starting, you'll need to make sure you have SSH keys added into the https://gitlab.pint.com website appropriately. https://docs.gitlab.com/ce/ssh/README.html#generating-a-new-ssh-key-pair
+
+### 2. Environment Installation (macOS)
 * Note: If any of these fail, you probably need to re-run the command with sudo.
 
-1. Install xcode (from the app store) https://itunes.apple.com/us/app/xcode/id497799835?mt=12
+1. Install nvm: 
+`$ curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.0/install.sh | bash` 
+* Note: If you see a prompt to install xcode command line tools, follow the steps on that prompt. You will need to re-run this command again after it installs.
 
-2. Install xcode command line tools
-`$ xcode-select --install`
-
-3. Install nvm: `$ curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.0/install.sh | bash`
- 
-4. Install at least v9.3.0 of node 
+2. Install at least v9.3.0 of node 
 `$ nvm install 9.3.0`
 
-5. Install bower
+3. Install bower
 `$ npm install -g bower`
 
-6. Install firebase-tools
+4. Install firebase-tools
 `$ npm install -g firebase-tools`
 
-7. $ `firebase login`
+5. Authenticate with your pint.com email in the browser window that pops open.
+`$ firebase login`
 
-## Development 
-cd into the current repository
+### 3. Obtain the repository
+`$ git clone git@gitlab.pint.com:pwa/pint.git && cd pint`
+
+### 4. Development 
 
 1. Install all dependencies
 `$ npm run 📦`
 or
-`$ npm run install`
+`$ npm run start`
 This will install all npm dependencies including the pwa-build repo, which will handle all the build steps.
 
 2. Start development server
@@ -48,6 +53,9 @@ or
 
 Note: The first time running the development server may take a while. (Installing client side dependencies)
 
+And you should be up and running!
+
+Any changes to the /src folder will be auto-compiled and your browser should reload and detect those changes.
 
 ## Commands
 

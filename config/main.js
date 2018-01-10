@@ -6,6 +6,7 @@ const pushManifest = require('./push_manifest');
 const sitemap = require('./sitemap');
 const serviceWorker = require('./service_worker');
 const redirects = require('./redirects');
+const rewrites = require('./rewrites');
 
 // PATHS
 const dist = path.resolve(__dirname + '/../dist');
@@ -17,6 +18,8 @@ module.exports = {
   pushManifest,
   // An array of redirect objects
   redirects,
+  // An array of rewrite objects
+  rewrites,
   // An array of sitemap object
   sitemap,
   // A folder path of where to generate the static files

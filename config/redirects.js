@@ -100,10 +100,12 @@ const redirects = [
   ['/staff/whitworth/tvague/links/blake.htm','/who-we-are',301],
   // BLOG REDIRECT
   ['/blog/', 'https://blog.pint.com/',301],
-  ['/blog/:tail*', 'https://blog.pint.com/:tail',301],
+  ['/blog/:tail*', 'https://blog.pint.com/:tail*',301],
   // NON-WWW to WWW REDIRECT
   // ['/', 'https://www.pint.com',301],
   // ['/:tail*', 'https://www.pint.com/:tail*',301],
+  // ['/contact-action', 'https://us-central1-pwa-stickers-4323.cloudfunctions.net/contact', 301],
+  // ['/newsletter-action', 'https://us-central1-pwa-stickers-4323.cloudfunctions.net/subscribe', 301]
 ];
 
 module.exports = redirects.map(redirect => {

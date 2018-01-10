@@ -67,3 +67,13 @@ Creates a production ready build with ES5/ES6
 
 #### $ npm run dev
 Creates a "live-reloading" environment that watches for content changes, builds a fresh ES6 build, and reloads the browser automatically.
+
+
+
+## TODO:
+
+document how to use local environemnt firebase config: 
+https://stackoverflow.com/questions/44766536/how-do-you-setup-local-environment-variables-for-cloud-functions-for-firebase
+
+- Integrate firebase serve to have functions, 
+- Utilize redirects + rewrites for function varaibles.

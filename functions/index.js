@@ -18,9 +18,7 @@ const app = express();
 // });
 
 // NEWSLETTER FORM
-app.get('/api/ping', (req, res) => {
-    res.send('pong');
-});
+
 app.post('/api/newsletter', (req, res) => {
     const form = new formidable.IncomingForm();
 
@@ -50,11 +48,6 @@ app.post('/api/newsletter', (req, res) => {
                 res.status(400).send(error);
             });
         }
-
-
-    //   res.writeHead(200, {'content-type': 'text/plain'});
-    //   res.write('received upload:\n\n');
-    //   res.end(util.inspect({fields: fields, files: files}));
     });
     
 });
@@ -65,6 +58,8 @@ app.post('/api/contact', (req, res) => {
 
     const form = new formidable.IncomingForm();
     form.parse(req, (err, fields, files) => {
+
+        console.log('start contact');
         let errorMessage = null;
 
         // User input validation
@@ -86,6 +81,8 @@ app.post('/api/contact', (req, res) => {
         if(!comment) {
             errorMessage = 'A comment is required';
         }
+
+        console.log('errormessage', errorMessage);
     
         if(errorMessage) {
             res.status(400).send(errorMessage);
@@ -114,9 +111,11 @@ app.post('/api/contact', (req, res) => {
     
             Promise.all(tasks)
             .then((result) => {
+                console.log('result',result);
                 res.send('<h2>Thanks for reaching out</h2><p>We\'ll be in touch shortly.</p>');
             })
             .catch((error) => {
+                console.log('error',error);
                 res.send(error);
             });
         }

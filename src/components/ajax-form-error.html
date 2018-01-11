@@ -18,9 +18,11 @@
                 transition: 0.2s transform;
                 transform: translate(-50%, 150%);
                 width: 90%;
+                visibility: hidden;
             }
             :host([active]) {
                 transform: translate(-50%, 0px);
+                visibility: visible;
             }
 
             #close {

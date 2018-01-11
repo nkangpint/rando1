@@ -1,0 +1,269 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<dom-module id="pint-jobs">
+  <template strip-whitespace>
+    <slot></slot>
+  </template>
+
+  <script>
+    class PintJobs extends Polymer.Element {
+      static get is() { return 'pint-jobs'; }
+
+      static get properties() {
+        return {}
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+
+        // Cache constants
+        this.jobArr = [];
+        this.xhrJobs = [];
+        // Cache attributes
+        this.activeAttr = 'active';
+        this.jobIdAttr = 'jobid';
+        // Cache CSS classes
+        this.closeClass = '.job-close';
+        this.descriptionClass = '.whr-description';
+        this.itemClass = '.whr-item';
+        this.titleClass = '.whr-title';
+        // Cache elements
+        this.$contentPanelsParent = this.querySelector('#job-content');
+        this.$contentPanels = null;
+        this.$contentPanelsArr = null;
+        this.$jobsParent = null;
+        this.$jobs = null;
+
+        // Init items on load
+        this.init();
+      }
+
+      // PUBLIC METHODS
+      // ----------------------------------
+
+      init() {
+        const xhr = new XMLHttpRequest();
+        xhr.onload = () => {
+          this.xhrJobs = JSON.parse(xhr.responseText);
+          // Create Panels from embed code
+          this.initPanels();
+        };
+        xhr.onerror = () => {
+          console.error('Error retrieving data: ', JSON.parse(xhr.responseText));
+        }
+        xhr.open('GET', 'https://us-central1-workable-proxy.cloudfunctions.net/getJobs', true);
+        xhr.send();
+       
+        // Store the target container so we can get the child jobs when they are added to the DOM
+        this.$jobsParent = this.querySelector('#whr_embed_hook');
+        
+      }
+
+      initPanels() {
+        // Set up loop
+        const IS_READY = () => {
+          this.$jobs = this.$jobsParent.querySelectorAll(this.itemClass);
+          // Continue loop until child jobs are written and found in the DOM
+          if (this.$jobs.length) {
+            // Show starting panel (either matching panel from jobid in url or intro panel)
+            this._initStartingPanel();
+            // Hydrate sidebar links click event
+            this._initSidebarLinksEvent();
+            // Hydrate close panel click event
+            this._initClosePanelClickEvent();
+            // Exit loop
+            return;
+          }
+          // Continue loop when available
+          requestAnimationFrame(IS_READY);
+        };
+        requestAnimationFrame(IS_READY);
+        // Create our own jobs array for use
+        this._createJobArray();
+      }
+
+      // PRIVATE METHODS
+      // ----------------------------------
+
+      /**
+       * @description The click event method for the panel close button
+       * @private
+       */
+      _closePanelBtnClickEvent() {
+        // Clear url hash
+        history.pushState('', document.title, window.location.pathname);
+        // Show intro panel
+        this._showPanel(0);
+        // Set sidebar link active state
+        this._setActiveSidebarLink(false);
+      }
+
+      /**
+       * @description Create the detail panels for each job
+       * @private
+       */
+      _createJobDetailPanel() {
+        let panels = '';
+        this.jobArr.forEach(j => {
+          panels += `
+            <div class="job-panel" jobid="${j.jobId}">
+              <h3>${j.title}</h3>
+              <div class="job-content">${j.description}</div>
+              <a href="${j.path}" class="btn" rel="nofollow, noopener, noreferrer">Apply Now</a>
+              <div class="job-close"><span>X</span></div>
+            </div>
+          `;
+        });
+        // Add panels to DOM
+        this.$contentPanelsParent.innerHTML += panels;
+        // Store newly added panels
+        this.$contentPanels = this.$contentPanelsParent.children;
+        this.$contentPanelsArr = [...this.$contentPanels];
+      }
+
+      /**
+       * @description Create custom array of the items we need to create the detail panels
+       * @private
+       */
+      _createJobArray() {
+        let description, path, title, jobId;
+        // Loop through each job
+
+        this.xhrJobs.forEach(i => {
+          // Get/Store props
+          title = i.title;
+          path = `${i.url}/candidates/new`;
+          jobId = i.shortcode;
+          description = i.description;
+          description += '<p><strong>Requirements</strong></p>' + i.requirements;
+          /* We are adding this section manually since workable converts links in the description to
+           * their url handler which causes realy ugly redirects.*/
+          description += `<p><strong>Benefits</strong></p>
+                          <p>PINT offers industry-competitive medical, dental, vision and life benefits, along with a 401k. We have a great location in <a href="https://www.google.com/maps/place/PINT,+Inc./@32.801588,-117.231394,15z/data=!4m12!1m6!3m5!1s0x0:0x23d8cf3f41fe5a36!2sPINT,+Inc.!8m2!3d32.801588!4d-117.231394!3m4!1s0x0:0x23d8cf3f41fe5a36!8m2!3d32.801588!4d-117.231394" target="_blank" rel="noopener noreferrer">Pacific Beach</a> just a mile from the Beach and a half-mile from the Bay…it’s an easy commute from most of the city.</p>
+                          <p>PINT also offers a small-business, casual environment with the longevity of an established company (est. 1994). We encourage collaboration and innovation, so if you have good ideas leadership is happy to hear them!</p>
+                          <p>Follow us on <a href="https://twitter.com/PINTSD" target="_blank" rel="noopener noreferrer">Twitter</a>, <a href="https://www.facebook.com/pintsd/" target="_blank" rel="noopener noreferrer">Facebook</a> and our <a href="https://blog.pint.com" target="_blank" rel="noopener noreferrer">Blog</a></p>`;
+          // Add item to our array
+          this.jobArr.push({ title, path, description, jobId });
+        });
+        // Sort array alphabetically by title
+        this.jobArr.sort(this._sortAlpha);
+
+        this._createJobDetailPanel();
+        this._initSidebarLinksDisplay()
+      }
+
+      /**
+       * @description Return to starting panel when the panel close button is clicked
+       * @private
+       */
+      _initClosePanelClickEvent() {
+        let closeBtn;
+        this.$contentPanelsArr.forEach(p => {
+          closeBtn = p.querySelector(this.closeClass);
+          if (!closeBtn) return p;
+          else closeBtn.addEventListener('click', e => this._closePanelBtnClickEvent(), {passive:true});
+        });
+      }
+
+      /**
+       * @description Now that we have our custom array, manipulate the sidebar links
+       * to prevent their <a> default (going to workable.com page) and instead show
+       * the correct panel (by index)
+       * @private
+       */
+      _initSidebarLinksDisplay() {
+        // Clear sidebar
+        this.$jobsParent.innerHTML = '';
+        // Add sorted array children back
+        let sidebarLinks = '', path;
+        this.jobArr.forEach(j => {
+          // Create link
+          sidebarLinks += `<li class="${this.itemClass.slice(1)}" jobid="${j.jobId}">${j.title}</li>`
+        });
+        this.$jobsParent.insertAdjacentHTML('afterbegin', sidebarLinks);
+        this.$jobs = this.$jobsParent.children;
+      }
+
+      /**
+       * @description Hydrate sidebar click events
+       * @private
+       */
+      _initSidebarLinksEvent() {
+        // Get sidebar links
+        this.$jobs = this.$jobsParent.children;
+        // Hydrate click event
+        [...this.$jobs].forEach((j, index) => j.addEventListener('click', e => this._sidebarLinkClickEvent(j, index), {passive:true}));
+      }
+
+      /**
+       * @description Show starting panel, either the matching panel from the jobid in the url hash or the intro panel
+       * @private
+       */
+      _initStartingPanel() {
+        // Get URL hash value
+        let hash = location.hash.substring(1);
+        let panelIndex = 0;
+        // If hash matches a panel, set index store to that panel's index
+        this.$contentPanelsArr.filter((p, index) => p.getAttribute(this.jobIdAttr) === hash ? panelIndex = index : p);
+        // Match hash against detail panel [jobid] attr value and show that panel if matched, or show intro panel
+        this._showPanel(panelIndex);
+        // Set sidebar link active state
+        if (panelIndex !== 0) this._setActiveSidebarLink(panelIndex-1);
+      }
+
+      /**
+       * @description Unset any active sidebar link and show target link (by index)
+       * @param {Number} index - The index of the panel to show
+       * @private
+       */
+      _setActiveSidebarLink(index) {
+        // Hide any active panel
+        [...this.$jobs].forEach(p => p.removeAttribute(this.activeAttr));
+        // Show target panel
+        if (index !== false) this.$jobs[index].setAttribute(this.activeAttr, '');
+      }
+
+      /**
+       * @description Hide any active panel and show target panel (by index)
+       * @param {Number} index - The index of the panel to show
+       * @private
+       */
+      _showPanel(index) {
+        // Hide any active panel
+        this.$contentPanelsArr.forEach(p => p.removeAttribute(this.activeAttr));
+        // Show target panel
+        this.$contentPanels[index].setAttribute(this.activeAttr, '');
+      }
+
+      /**
+       * @description Click event for the sidebar links
+       * @param {Number} el - The clicked element
+       * @param {Number} index - The index of the clicked item
+       * @private
+       */
+      _sidebarLinkClickEvent(el, index) {
+        // Add job id to url so we can show the correct detail panel on return
+        location.hash = el.getAttribute(this.jobIdAttr);
+        // Set active link
+        this._setActiveSidebarLink(index);
+        // Show detail panel by index
+        this._showPanel(index+1);
+      }
+
+      /**
+       * @description Custom sort method to sort alphabetically by `title`
+       * @param {Object} curr - The current item
+       * @param {Object} next - The next item to compare against
+       * @return {number}
+       * @private
+       */
+      _sortAlpha(curr, next) {
+        if (curr.title > next.title) return 1;
+        if (curr.title < next.title) return -1;
+        return 0;
+      }
+    }
+
+    customElements.define(PintJobs.is, PintJobs);
+  </script>
+</dom-module>

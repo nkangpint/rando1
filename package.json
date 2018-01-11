@@ -9,7 +9,7 @@
     "build:dev": "npm run build",
     "build:prod": "node /Users/mschultz/pwa-build build --config config/main.js --min --es5 --sw --sitemap --fb",
     "dev": "npm run start && npm run build:dev && node /Users/mschultz/pwa-build dev --config config/main.js",
-    "deploy": "npm run build:prod && firebase deploy",
+    "deploy": "npm run build:prod && firebase deploy --only functions,hosting",
     "📦": "npm run start",
     "🔥": "npm run dev"
   },

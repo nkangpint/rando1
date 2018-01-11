@@ -18,7 +18,7 @@ body {
     background: white;
     color: #595959;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-    font-size: 0.8125rem;
+    font-size: 1rem;
     font-weight: 400;
     line-height:1.5;
     padding-top: calc(30px + 2rem);
@@ -89,14 +89,13 @@ h3, .h3 {
     position: relative;
     width: 100%;
 }
-.bg--dots { background-color: #f2f2f2; }
-.dev .bg--dots { background-image: url('/dev/assets/images/bg-dots.png'); }
+.bg--dots { background-color: #f2f2f2; background-image: url('/assets/images/bg-dots.png');}
 .es5 .bg--dots { background-image: url('/es5/assets/images/bg-dots.png'); }
-.bg--dots { background-image: url('/assets/images/bg-dots.png'); }
+
 .bg--banner {
-    align-items: center;
     display: flex;
-   /* justify-content: center;*/
+    align-items: center;
+    justify-content: center;
     min-height: 320px;
 }
 .bg--banner-copy {
@@ -133,6 +132,7 @@ h3, .h3 {
 /* Margin */
 .margin-bottom__medium { margin-bottom: 2rem; }
 .margin-bottom__none { margin-bottom: 0; }
+.margin-top__none { margin-top: 0 !important; }
 .margin-top__medium { margin-top: 2rem; }
 .margin-top__small { margin-top: 1.5rem; }
 .margin-top__x-small { margin-top: 1rem; }
@@ -148,6 +148,7 @@ h3, .h3 {
 
 /* Padding */
 .padding--bottom-none { padding-bottom:0 !important; }
+.js .padding--bottom-none_js { padding-bottom:0 !important; }
 
 /* Form: Required */
 .req {
@@ -198,8 +199,9 @@ h3, .h3 {
     margin: 1rem 0;
 }
 .box--1 {
-    background: #fbfbfb;
-    border:1px solid #efefef;
+    background: #E2E3E3;
+    border:0px solid #DBDCDC;
+    border-top-width: 2px;
     padding: 20px;
 }
 
@@ -414,6 +416,30 @@ app-carousel-item:not([selected]) {
 .row--desktop { display: block; }
 .row--tablet { display: block; }
 
+/* WEB-COMPONENT OVERRIDES
+---------------------------------------------- */
+/* LAZY IMAGE */
+lazy-image img { width:100%; height:100%; display:block; }
+.js lazy-image img { display:none; }
+
+/* PINT JOBS */
+.js pint-jobs { padding-top:40px; display:block; }
+.js pint-jobs .job-panel { display:none; }
+.js pint-jobs .job-panel[active] { display:block; }
+.job-panel.start {  }
+pint-jobs .row {
+    display: flex;
+    flex-direction: column;
+}
+
+pint-jobs .col:first-of-type {
+    order: 2;
+}
+
+pint-jobs .col:last-of-type {
+    order: 1;
+}
+
 /* LAYOUT / SITE SPECIFICS
 ---------------------------------------------- */
 /* Who we are books */
@@ -511,6 +537,8 @@ app-carousel-item:not([selected]) {
     height: 30px;
     width: 100px;
 }
+.header__nav { height:30px; }
+.js .header__nav { height:auto; }
 .header__nav,
 .header__nav-items {
     display: flex;
@@ -568,10 +596,9 @@ app-carousel-item:not([selected]) {
     height: 80px;
     margin: 0 auto;
     width: 175px;
+    background-image: url('/assets/images/bg-sprite.png');
 }
-.dev .product-icon { background-image: url('/dev/assets/images/bg-sprite.png'); }
 .es5 .product-icon { background-image: url('/es5/assets/images/bg-sprite.png'); }
-.product-icon { background-image: url('/assets/images/bg-sprite.png'); }
 .product-icon--zingchart {
     background-position: 15px -109px;
     background-size: 216px;
@@ -605,6 +632,7 @@ app-carousel-item:not([selected]) {
     z-index: 100;
 }
 .testimonial__quote:after {
+    background-image: url('/assets/images/bg-quote.png');
     background-position: 0 0;
     background-repeat: no-repeat;
     content: '';
@@ -616,9 +644,86 @@ app-carousel-item:not([selected]) {
     width: 30px;
     z-index: -1;
 }
-.dev .testimonial__quote:after { background-image: url('/dev/assets/images/bg-quote.png'); }
 .es5 .testimonial__quote:after { background-image: url('/es5/assets/images/bg-quote.png'); }
-.testimonial__quote:after { background-image: url('/assets/images/bg-quote.png'); }
+
+/* Join Our Team */
+.whr-item {
+    color: hsl(199, 100%, 34%);
+    cursor: pointer;
+    font-size: .875rem;
+    font-weight: bold;
+    line-height: 1.4;
+    list-style: none;
+    padding: 8px 0;
+    transition: color 0.15s;
+    text-decoration: none;
+}
+.whr-item[active],
+.whr-item[active]:hover {
+    color: #186E4E;
+    cursor: default;
+    position: relative;
+}
+.whr-item[active]:before {
+    display: block;
+    content: '';
+    width: 0;
+    height: 0;
+    position: absolute;
+    left: -20px;
+    top: 50%;
+    margin-top: -10px;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-left: 10px solid #ffffff;
+}
+.whr-item:hover {
+    color: hsl(199, 100%, 39%);
+}
+.job-panel {
+    padding: 10px 0 0 0;
+    position: relative;
+}
+.job-panel.start {
+
+}
+.job-panel h3 {
+    font-size: 1.5rem;
+    max-width: 90%;
+}
+.job-panel.start h3 {
+    margin-top: 10px;
+}
+.job-panel .btn {
+    margin-top: 20px;
+    margin-bottom: 1rem;
+}
+.job-close {
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 100%;
+}
+.job-close span {
+    background: #4B7B8C;
+    color: #fff;
+    cursor: pointer;
+    float: right;
+    font-size: 1rem;
+    padding: 7px 15px;
+}
+
+#whr_embed_hook .whr-info { display:none;  }
+#whr_embed_hook ul { margin-left:0; padding-left:0; }
+#whr_embed_hook ul li { list-style:none; margin-left:0; padding-left:0; }
+.bg-join h3 { margin-top:10px; }
+.bg-join .box--1 h3 {
+    margin-top:0px;
+    font-size: 1.5rem;
+    max-width: 90%;
+}
+.bg-join .box--1 h3.whr-title { margin-top:20px; }
 
 
 /* MEDIA QUERIES
@@ -674,7 +779,6 @@ app-carousel-item:not([selected]) {
     ---------------------------------------------- */
 
     body {
-        font-size: 0.875rem;
         line-height: 1.6;
     }
     p {
@@ -817,7 +921,9 @@ app-carousel-item:not([selected]) {
 
     /* Width */
     .width--tablet__1of2 { width: 50%; }
-
+    .col-md--1of3 {
+        max-width: initial;;
+    }
     /* LAYOUT / SITE SPECIFICS
     ---------------------------------------------- */
     /* Who we are books image */ 
@@ -1037,6 +1143,9 @@ app-carousel-item:not([selected]) {
     .width--full {
         width: 100%;
     }
+    .col-md--1of3 {
+        max-width: 33.333333333%;;
+    }
 
     /* WEB-COMPONENT OVERRIDES
     ---------------------------------------------- */
@@ -1044,6 +1153,27 @@ app-carousel-item:not([selected]) {
     employee-bio {
         margin: 0 auto;
         width: 75%;
+    }
+
+    .job-panel {
+        padding: 10px 80px 0 0;
+        border-top: 2px solid #DBDCDC;
+    }
+
+    .job-panel .btn {
+        margin-bottom: 0;
+    }
+
+    pint-jobs .row {
+        flex-direction: row;
+    }
+
+    pint-jobs .col:first-of-type {
+        order: 1;
+    }
+
+    pint-jobs .col:last-of-type {
+        order: 2;
     }
 
     /* LAYOUT / SITE SPECIFICS
@@ -1075,3 +1205,13 @@ app-carousel-item:not([selected]) {
 @media screen and (max-width: 768px) {
     .tablet--hide { display: none; }
 }
+
+/* IE Specific */
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    .content .bg--banner {
+        justify-content:initial;
+    }
+}
+
+/* Jobs Media Query */
+

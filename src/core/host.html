@@ -205,12 +205,35 @@
   <!-- SERVICE WORKER -->
   <!-- Include Service Worker install registration -->
   <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js', {
-        // scope: '/'
-      }).then(function (registration) {
-        console.info('Service worker registered with scope', registration.scope);
-      });
+    // if ('serviceWorker' in navigator) {
+    //   navigator.serviceWorker.register('sw.js', {
+    //     // scope: '/'
+    //   }).then(function (registration) {
+    //     console.info('Service worker registered with scope', registration.scope);
+    //   });
+    // }
+  </script>
+
+  <script>
+    // Test if WebP supported
+    testWebP(document.body);
+    /**
+     * @description Test if WebP image format supported; if it is, add 'webp' css class to <body>
+     * @private
+     */
+    function testWebP(target) {
+      testWebP(notify);
+      function testWebP(callback) {
+        // Create tiny .webp image to test for
+        const WEBP = new Image();
+        WEBP.src = 'data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACyAgCdASoCAAIALmk0mk0iIiIiIgBoSygABc6WWgAA/veff/0PP8bA//LwYAAA';
+        WEBP.onload = WEBP.onerror = () => callback(WEBP.height === 2);
+      }
+      function notify(supported) {
+        // Add css class to <body>
+        const WEBP_CSS_CLASS = supported ? 'webp' : 'no-webp';
+        target.classList.add(WEBP_CSS_CLASS);
+      }
     }
   </script>
 

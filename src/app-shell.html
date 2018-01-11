@@ -103,8 +103,6 @@
 
         // Store <body>
         this.body = document.querySelector('body');
-        // Test if WebP supported
-        this._testWebP(this.body);
       }
 
       connectedCallback() {
@@ -296,25 +294,6 @@
           // If <a> tag points to an internal site page, scroll the window
           if (e.target.hostname === location.hostname) window.scrollTo(0, 0);
         })
-      }
-
-      /**
-       * @description Test if WebP image format supported; if it is, add 'webp' css class to <body>
-       * @private
-       */
-      _testWebP(target) {
-        testWebP(notify);
-        function testWebP(callback) {
-          // Create tiny .webp image to test for
-          const WEBP = new Image();
-          WEBP.src = 'data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACyAgCdASoCAAIALmk0mk0iIiIiIgBoSygABc6WWgAA/veff/0PP8bA//LwYAAA';
-          WEBP.onload = WEBP.onerror = () => callback(WEBP.height === 2);
-        }
-        function notify(supported) {
-          // Add css class to <body>
-          const WEBP_CSS_CLASS = supported ? 'webp' : 'no-webp';
-          target.classList.add(WEBP_CSS_CLASS);
-        }
       }
 
       /**

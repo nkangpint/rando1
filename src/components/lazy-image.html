@@ -184,6 +184,13 @@
             /**
             * Read-only value that indicates that the last set `src` failed to load.
             */
+            fallbackExt: {
+              type: String
+            },
+
+            /**
+            * Read-only value that indicates that the last set `src` failed to load.
+            */
             error: {
               notify: true,
               readOnly: true,
@@ -347,8 +354,31 @@
         return resolved;
       }
 
+      _convertSrc(src) {
+        let split = src.split('/');
+        const file = split[split.length-1];
+        const fileSplit = file.split('.');
+        const ext = fileSplit[fileSplit.length-1];
+        // console.log( '1:', ext === 'webp' );
+        // console.log( '2:', document.body.classList.contains('webp') );
+        console.log( '2:', this );
+        console.log( '3:', this.fallbackExt );
+        console.log( '4:', document.body.classList );
+        console.log( '5', document.querySelector('body') );
+        const fileExt = ext === 'webp' && document.body.classList.contains('webp') ? 'webp' : this.fallbackExt ? this.fallbackExt : ext;
+        console.log( 'fileExt', fileExt );
+        split.pop();
+        split = split.join('/');
+        console.log( 'split:', split );
+        console.log( 'x:', `${split}/${fileSplit[0]}.${fileExt}` );
+        return `${split}/${fileSplit[0]}.${fileExt}`;
+      }
+
       connectedCallback() {
         super.connectedCallback();
+
+        this.src = this._convertSrc(this.src);
+        console.log( 'src:', this.src );
       }
            
       constructor() {

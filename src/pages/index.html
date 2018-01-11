@@ -14,8 +14,13 @@
                 <a onclick="ga('send', 'event', 'Button', 'Click', 'Home - Header');" href="/contact" class="btn btn--alt text--uppercase">Get in touch</a>
               </p>
             </div>
-            <lazy-image class="bg__image" fade preload sizing="cover" src="assets/images/banner--homepage.jpg">
-              <noscript><img src="assets/images/banner&#45;&#45;homepage.jpg" alt="PINT Inc."></noscript>
+            <lazy-image class="bg__image" fade preload sizing="cover" src="/assets/images/banner-homepage.webp" fallback-ext="jpg">
+              <noscript>
+                <picture>
+                  <source srcset="/assets/images/banner-homepage.webp" type="image/webp">
+                  <img src="/assets/images/banner-homepage.jpg" alt="PINT Inc.">
+                </picture>
+              </noscript>
             </lazy-image>          
           </section>
         

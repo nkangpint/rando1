@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "cd src && bower install && cd .. && npm install",
-    "build": "node /Users/mschultz/pwa-build build --config config/main.js --fb",
+    "build": "node node_modules/pwa-build build --config config/main.js --fb",
     "build:dev": "npm run build",
-    "build:prod": "node /Users/mschultz/pwa-build build --config config/main.js --min --es5 --sw --sitemap --fb",
-    "dev": "npm run start && npm run build:dev && node /Users/mschultz/pwa-build dev --config config/main.js",
+    "build:prod": "node node_modules/pwa-build build --config config/main.js --min --es5 --sw --sitemap --fb",
+    "dev": "npm run start && npm run build:dev && node node_modules/pwa-build dev --config config/main.js",
     "deploy": "npm run build:prod && firebase deploy --only functions,hosting",
     "📦": "npm run start",
     "🔥": "npm run dev"
@@ -16,7 +16,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "pwa-build": "git+ssh://git@gitlab.pint.com/pwa/pwa-build.git#0.0.3"
+    "pwa-build": "git+ssh://git@gitlab.pint.com/pwa/pwa-build.git#0.0.4"
   },
   "dependencies": {
     "formidable": "^1.1.1"

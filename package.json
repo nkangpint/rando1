@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "cd src && bower install && cd .. && cd functions && npm install && cd .. && npm install",
-    "build": "node node_modules/pwa-build build --config config/main.js --fb",
+    "build": "node /Users/DS/src/pwa-build build --config config/main.js --fb",
     "build:dev": "npm run build",
-    "build:prod": "node node_modules/pwa-build build --config config/main.js --min --es5 --sw --sitemap --fb",
-    "dev": "npm run start && npm run build:dev && node node_modules/pwa-build dev --config config/main.js",
+    "build:prod": "node /Users/DS/src/pwa-build build --config config/main.js --min --es5 --sw --sitemap --fb",
+    "dev": "npm run start && npm run build:dev && node /Users/DS/src/pwa-build dev --config config/main.js",
     "deploy": "npm run build:prod && firebase deploy --only functions,hosting",
     "deploy:fn": "npm run build:prod && firebase deploy --only functions",
     "deploy:host": "npm run build:prod && firebase deploy --only hosting",

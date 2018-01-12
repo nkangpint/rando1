@@ -2,6 +2,7 @@
 const path = require('path');
 
 // EXTERNAL FILES
+const headers = require('./headers');
 const pushManifest = require('./push_manifest');
 const sitemap = require('./sitemap');
 const serviceWorker = require('./service_worker');
@@ -14,6 +15,8 @@ const dist = path.resolve(__dirname + '/../dist');
 module.exports = {
   // The name of the project in firebase
   project: 'pwa-stickers-4323',
+  // Firebase headers
+  headers,
   // An array of push manifest objects.
   pushManifest,
   // An array of redirect objects
@@ -34,4 +37,4 @@ module.exports = {
   shell: 'src/core/app-shell.html',
   // The path to the folder containing page partials, to be generated to static files.
   pages: 'src/pages',
-}
+};

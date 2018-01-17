@@ -422,6 +422,8 @@ app-carousel-item:not([selected]) {
 lazy-image img { width:100%; height:100%; display:block; }
 .js lazy-image img { display:none; }
 
+/* PINT BLOG */
+pint-blog { min-height:75px; display:block;}
 /* PINT JOBS */
 .js pint-jobs { padding-top:40px; display:block; }
 .js pint-jobs .job-panel { display:none; }

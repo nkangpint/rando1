@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9d5bf86c-3237-4ab4-b85b-bd5f0bf35dc7" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/src/core/host.html" afterPath="$PROJECT_DIR$/src/core/host.html" />
+      <change beforePath="$PROJECT_DIR$/src/assets/styles/main.css" afterPath="$PROJECT_DIR$/src/assets/styles/main.css" />
+      <change beforePath="$PROJECT_DIR$/src/components/pint-blog.html" afterPath="$PROJECT_DIR$/src/components/pint-blog.html" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -16,41 +17,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="host.html" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/core/host.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="662">
-              <caret line="220" column="39" lean-forward="true" selection-start-line="220" selection-start-column="39" selection-end-line="220" selection-end-column="39" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/pages/index.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
-              <caret line="89" column="26" lean-forward="false" selection-start-line="89" selection-start-column="26" selection-end-line="89" selection-end-column="26" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="what-we-do.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/pages/what-we-do.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="372">
-              <caret line="265" column="16" lean-forward="false" selection-start-line="265" selection-start-column="16" selection-end-line="265" selection-end-column="16" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="pint-blog.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="pint-blog.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/components/pint-blog.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="710">
-              <caret line="170" column="7" lean-forward="false" selection-start-line="170" selection-start-column="7" selection-end-line="170" selection-end-column="7" />
+            <state relative-caret-position="627">
+              <caret line="182" column="41" lean-forward="true" selection-start-line="182" selection-start-column="41" selection-end-line="182" selection-end-column="41" />
               <folding />
             </state>
           </provider>
@@ -115,8 +86,9 @@
         <option value="$PROJECT_DIR$/src/mixins/scroll-limiter.html" />
         <option value="$PROJECT_DIR$/src/app-shell.html" />
         <option value="$PROJECT_DIR$/src/pages/what-we-do.html" />
-        <option value="$PROJECT_DIR$/src/components/pint-blog.html" />
         <option value="$PROJECT_DIR$/src/core/host.html" />
+        <option value="$PROJECT_DIR$/src/assets/styles/main.css" />
+        <option value="$PROJECT_DIR$/src/components/pint-blog.html" />
       </list>
     </option>
   </component>
@@ -190,6 +162,19 @@
               <item name="pint" type="b2602c69:ProjectViewProjectNode" />
               <item name="pint" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="assets" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="pint" type="b2602c69:ProjectViewProjectNode" />
+              <item name="pint" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="assets" type="462c0819:PsiDirectoryNode" />
+              <item name="styles" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="pint" type="b2602c69:ProjectViewProjectNode" />
+              <item name="pint" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="components" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -253,12 +238,12 @@
       <updated>1515712063955</updated>
       <workItem from="1515712065041" duration="3471000" />
       <workItem from="1515716222670" duration="691000" />
-      <workItem from="1516209798411" duration="4074000" />
+      <workItem from="1516209798411" duration="4735000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="11654000" />
+    <option name="totallyTimeSpent" value="12315000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-2163" y="23" width="2162" height="1413" extended-state="0" />
@@ -295,13 +280,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/pages/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="735">
-          <caret line="35" column="65" lean-forward="false" selection-start-line="35" selection-start-column="65" selection-end-line="35" selection-end-column="65" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/lazy-image.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="7224">
@@ -633,18 +611,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/what-we-do.html">
+    <entry file="file://$PROJECT_DIR$/src/core/host.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="372">
-          <caret line="265" column="16" lean-forward="false" selection-start-line="265" selection-start-column="16" selection-end-line="265" selection-end-column="16" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/pint-blog.html">
+    <entry file="file://$PROJECT_DIR$/src/pages/what-we-do.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="710">
-          <caret line="170" column="7" lean-forward="false" selection-start-line="170" selection-start-column="7" selection-end-line="170" selection-end-column="7" />
+        <state relative-caret-position="372">
+          <caret line="265" column="16" lean-forward="false" selection-start-line="265" selection-start-column="16" selection-end-line="265" selection-end-column="16" />
           <folding />
         </state>
       </provider>
@@ -657,10 +635,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/host.html">
+    <entry file="file://$PROJECT_DIR$/src/assets/styles/main.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="662">
-          <caret line="220" column="39" lean-forward="true" selection-start-line="220" selection-start-column="39" selection-end-line="220" selection-end-column="39" />
+        <state relative-caret-position="599">
+          <caret line="438" column="1" lean-forward="true" selection-start-line="438" selection-start-column="1" selection-end-line="438" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/pint-blog.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="627">
+          <caret line="182" column="41" lean-forward="true" selection-start-line="182" selection-start-column="41" selection-end-line="182" selection-end-column="41" />
           <folding />
         </state>
       </provider>

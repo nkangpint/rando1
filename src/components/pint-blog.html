@@ -10,6 +10,7 @@
         display: flex;
         flex: 0 1 auto;
         flex-flow: row wrap;
+        min-height: 75px;
         text-align: center;
       }
       .post, .post * { box-sizing: border-box; }
@@ -19,6 +20,7 @@
         flex-basis: 33.333%;
         flex-grow: 0;
         max-width: 33.333%;
+        min-height: 75px;
         padding: 0 .5rem;
       }
       .post:first-of-type { border:0; }
@@ -141,8 +143,8 @@
        */
       _createPost(post) {
         // Feed post data
-        const date = this._setPostDate(post.querySelector('pubDate').textContent);
-        const title = post.querySelector('title').textContent;
+        const date = this._formatPostDate(post.querySelector('pubDate').textContent);
+        const title = this._formatPostTitle(post.querySelector('title').textContent);
         const url = post.querySelector('link').textContent;
         // Template Clone
         const postTemplateClone = this.$template.cloneNode(true).content;
@@ -150,10 +152,46 @@
         const cloneTitle = postTemplateClone.querySelector('.post-link');
         // Set template clone content
         cloneDate.textContent = date;
-        cloneTitle.textContent = title;
+        cloneTitle.innerHTML = title;
         cloneTitle.setAttribute('href', url);
         // Return new post
         return postTemplateClone;
+      }
+
+      /**
+       * @description Format the date string returned from the feed into the desired format for display in the DOM
+       * @param {String} postDate - The unformatted date string from the blog feed
+       * @return {String}
+       * @private
+       */
+      _formatPostDate(postDate) {
+        const formatDate = new Date(postDate);
+        const month = formatDate.getMonth();
+        const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+        const day = formatDate.getDate();
+        const year = formatDate.getFullYear();
+        return `${monthNames[month]}, ${day} ${year}`;
+      }
+
+      /**
+       * @description Format the title string to break to 2 lines if the title length is past a threshold
+       * @param {String} postTitle - The title string from the blog feed
+       * @return {String}
+       * @private
+       */
+      _formatPostTitle(postTitle) {
+        const postLen = postTitle.length;
+        // Return title as-is if it doesn't meet our criteria
+        if (postLen < 20 || postLen > 40) return postTitle;
+        // Otherwise, add a <br> tag after the middle word
+        // Split string on space
+        const words = postTitle.split(' ');
+        // Find the middle word in the new split array (floor instead of ceil b/c of zero-index)
+        const half = Math.floor(words.length / 2);
+        // Add <br> tag
+        words[half] = `${words[half]}<br>`;
+        // Join the words back together, separating by a space
+        return words.join(' ');
       }
 
       /**
@@ -168,21 +206,6 @@
         const filteredPosts = [...posts].splice(0,this.limit);
         // Run 'Add posts to DOM' method
         this._addPostsToDom(filteredPosts);
-      }
-
-      /**
-       * @description Format the date string returned from the feed into the desired format for display in the DOM
-       * @param {String} postDate - The unformatted date string from the blog feed
-       * @return {String}
-       * @private
-       */
-      _setPostDate(postDate) {
-        const formatDate = new Date(postDate);
-        const month = formatDate.getMonth();
-        const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-        const day = formatDate.getDate();
-        const year = formatDate.getFullYear();
-        return `${monthNames[month]}, ${day} ${year}`;
       }
 
     }

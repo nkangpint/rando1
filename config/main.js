@@ -14,7 +14,7 @@ const dist = path.resolve(__dirname + '/../dist');
 
 module.exports = {
   // The name of the project in firebase
-  project: 'pint-site',
+  project: 'pwa-stickers-4323',
   // Firebase headers
   headers,
   // An array of push manifest objects.

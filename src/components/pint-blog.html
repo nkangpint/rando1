@@ -77,7 +77,6 @@
 
       static get properties() {
         return {
-          category: Boolean,
           limit: {
             type: Number,
             value: 3,
@@ -88,8 +87,6 @@
 
       connectedCallback() {
         super.connectedCallback();
-
-        console.log( 'src:', this.src );
 
         // Cache elements
         this.$target = this.shadowRoot.querySelector('#posts');

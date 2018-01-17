@@ -1,0 +1,195 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+
+<dom-module id="pint-blog">
+  <template>
+    <style>
+      :host {}
+      #posts {
+        box-sizing: border-box;
+        display: flex;
+        flex: 0 1 auto;
+        flex-flow: row wrap;
+        text-align: center;
+      }
+      .post, .post * { box-sizing: border-box; }
+      .post {
+        border-left: 1px solid #d9d9d9;
+        flex: 1;
+        flex-basis: 33.333%;
+        flex-grow: 0;
+        max-width: 33.333%;
+        padding: 0 .5rem;
+      }
+      .post:first-of-type { border:0; }
+      .post a {
+        color: hsl(199, 100%, 34%);
+        display: block;
+        font-weight: bold;
+        margin-bottom: 3px;
+        text-decoration: none;
+        transition: color 0.15s;
+      }
+      .post small {
+        display: block;
+      }
+
+      .feed-error {
+        color: red;
+        font-weight: 700;
+        text-align: center;
+      }
+
+      @media screen and (max-width: 768px) {
+        #posts {
+          display: flex;
+          flex-wrap: wrap;
+        }
+        .post {
+          flex-basis: 100%;
+          max-width: 100%;
+          border-left: none;
+          padding-bottom: 1rem;
+        }
+        .post:last-child {
+          padding-bottom: 0;
+        }
+      }
+    </style>
+
+    <template id="post-template" preserve-content>
+      <div class="post">
+        <a href="" target="_blank" rel="noopener" class="post-link"></a>
+        <small class="post-date text--centered">November 16, 2017</small>
+      </div>
+    </template>
+
+    <div id="posts"></div>
+
+    <template is="dom-if" if="[[feedError]]">
+      <div class="feed-error">There was an error getting the blog feed. Please try again later.</div>
+    </template>
+  </template>
+
+  <script>
+    class PintBlog extends Polymer.Element {
+      static get is() { return 'pint-blog'; }
+
+      static get properties() {
+        return {
+          category: Boolean,
+          limit: {
+            type: Number,
+            value: 3,
+          },
+          src: String,
+        }
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+
+        console.log( 'src:', this.src );
+
+        // Cache elements
+        this.$target = this.shadowRoot.querySelector('#posts');
+        this.$template = this.shadowRoot.querySelector('#post-template');
+
+        // Fetch the desired blog feed
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', this.src, true);
+        xhr.responseType = 'document';
+        xhr.send();
+        xhr.addEventListener('readystatechange', e => this.feedState(xhr, e));
+      }
+
+      /* PUBLIC METHODS*/
+      /* ----------------------------------*/
+
+      /**
+       * @description Control the success and error states of the feed XHR request
+       * @param {Object} xhr - The XHR object
+       * @param {Object} event - The returned payload
+       */
+      feedState(xhr, event) {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) this._getFeedItems(event);
+          else this.feedError = true;
+        }
+      }
+
+      // PRIVATE METHODS
+      // ----------------------------------
+
+      /**
+       * @description Create post DOM and append them to DOM.
+       * @param {Object} posts - The filtered posts to show
+       * @private
+       */
+      _addPostsToDom(posts) {
+        // Create holding fragment to append posts to
+        // We'll then append the frag once to real DOM instead of appending all the posts separately
+        const postFrag = document.createDocumentFragment();
+        // Create post DOM from <template> and add to frag
+        posts.forEach(p => postFrag.appendChild(this._createPost(p)));
+        // Append frag to DOM once
+        this.$target.appendChild(postFrag);
+      }
+
+      /**
+       * @description Clone post <template> and add individual post data to clone for DOM append
+       * @param {Object} post - The current post to create
+       * @return {*|string|DocumentFragment}
+       * @private
+       */
+      _createPost(post) {
+        // Feed post data
+        const date = this._setPostDate(post.querySelector('pubDate').textContent);
+        const title = post.querySelector('title').textContent;
+        const url = post.querySelector('link').textContent;
+        // Template Clone
+        const postTemplateClone = this.$template.cloneNode(true).content;
+        const cloneDate = postTemplateClone.querySelector('.post-date');
+        const cloneTitle = postTemplateClone.querySelector('.post-link');
+        // Set template clone content
+        cloneDate.textContent = date;
+        cloneTitle.textContent = title;
+        cloneTitle.setAttribute('href', url);
+        // Return new post
+        return postTemplateClone;
+      }
+
+      /**
+       * @description This method runs when the XHR feed fetch succeeds. We filter the # of posts to show here
+       * @param {Object} res - The XHR response
+       * @private
+       */
+      _getFeedItems(res) {
+        const response = res.target.responseXML;
+        const posts = response.querySelectorAll('item');
+        // Only show X number of posts
+        const filteredPosts = [...posts].splice(0,this.limit);
+        // Run 'Add posts to DOM' method
+        this._addPostsToDom(filteredPosts);
+      }
+
+      /**
+       * @description Format the date string returned from the feed into the desired format for display in the DOM
+       * @param {String} postDate - The unformatted date string from the blog feed
+       * @return {String}
+       * @private
+       */
+      _setPostDate(postDate) {
+        const formatDate = new Date(postDate);
+        const month = formatDate.getMonth();
+        const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+        const day = formatDate.getDate();
+        const year = formatDate.getFullYear();
+        return `${monthNames[month]}, ${day} ${year}`;
+      }
+
+    }
+
+    customElements.define(PintBlog.is, PintBlog);
+  </script>
+</dom-module>

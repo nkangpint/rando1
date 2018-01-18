@@ -37,4 +37,5 @@ module.exports = {
   shell: 'src/core/app-shell.html',
   // The path to the folder containing page partials, to be generated to static files.
   pages: 'src/pages',
+  legacy: true,
 };

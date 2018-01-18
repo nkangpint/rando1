@@ -7,7 +7,7 @@ module.exports.send = function({subject, message}) {
 
     const msg = {
         to: 'mschultz@zingchart.com',
-        from: 'mschultz@pint.com',
+        from: 'noreply@pint.com',
         subject,
         text: message,
         html: message,

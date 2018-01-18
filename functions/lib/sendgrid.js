@@ -6,8 +6,8 @@ module.exports.send = function({subject, message}) {
     sendgrid.setApiKey(SENDGRID_API_KEY);
 
     const msg = {
-        to: 'mschultz@zingchart.com',
-        from: 'mschultz@pint.com',
+        to: 'sales@pint.com',
+        from: 'noreply@pint.com',
         subject,
         text: message,
         html: message,

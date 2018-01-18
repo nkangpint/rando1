@@ -14,14 +14,14 @@
                 <a onclick="ga('send', 'event', 'Button', 'Click', 'Home - Header');" href="/contact" class="btn btn--alt text--uppercase">Get in touch</a>
               </p>
             </div>
-            <lazy-image class="bg__image" fade preload sizing="cover" src="/assets/images/banner-homepage.webp" fallback-ext="jpg">
-              <noscript>
-                <picture>
-                  <source srcset="/assets/images/banner-homepage.webp" type="image/webp">
-                  <img src="/assets/images/banner-homepage.jpg" alt="PINT Inc.">
-                </picture>
-              </noscript>
-            </lazy-image>          
+            <div class="bg__image">
+              <div
+                id="sizedImgDiv"
+                role="img"
+                aria-label="banner-homepage.webp"
+                class="loaded"
+                style="display:block;height:100%;background-image: url(/assets/images/banner-homepage.webp);background-size: cover;background-position: center center;background-repeat: no-repeat;"></div>
+            </div>
           </section>
         
           <!-- Tagline -->

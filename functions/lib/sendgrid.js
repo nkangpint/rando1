@@ -1,13 +1,14 @@
 const sendgrid = require('@sendgrid/mail');
 const functions = require('firebase-functions');
 
-module.exports.send = function({subject, message}) {
+module.exports.send = function({email, subject, message}) {
     const SENDGRID_API_KEY = functions.config().sendgrid.api_key;
     sendgrid.setApiKey(SENDGRID_API_KEY);
 
     const msg = {
         to: 'sales@pint.com',
         from: 'noreply@pint.com',
+        replyTo: email,
         subject,
         text: message,
         html: message,

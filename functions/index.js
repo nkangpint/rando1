@@ -78,7 +78,7 @@ app.post('/api/contact', (req, res) => {
             `;
             const subject = `New PINT Contact Form Submissions ${name} (${email})`;
             const tasks = [
-                sendgrid.send({ subject, message}),
+                sendgrid.send({ email, subject, message}),
             ];
             if(signup) {
                 tasks.push(mailchimp.subscribe({name, email}));
@@ -143,7 +143,7 @@ app.post('/api/contact', (req, res) => {
             `;
             const subject = `New PINT Contact Form Submissions ${name} (${email})`;
             const tasks = [
-                sendgrid.send({ subject, message}),
+                sendgrid.send({ email, subject, message}),
             ];
             if(signup) {
                 tasks.push(mailchimp.subscribe({name, email}));

@@ -111,7 +111,6 @@ app.post('/api/contact', (req, res) => {
             field_userComment: comment,
             field_yesnewsletter: signup,
         } = fields;
-    
         if(!email) {
             errorMessage = 'An email is required';
         }

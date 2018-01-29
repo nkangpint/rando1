@@ -1,4 +1,5 @@
 dist/
+temp/
 firebase.json
 .firebaserc
 node_modules/

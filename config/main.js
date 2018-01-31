@@ -15,6 +15,8 @@ const dist = path.resolve(__dirname + '/../dist');
 module.exports = {
   // The name of the project in firebase
   project: 'pint-site',
+  // The staging environment in firebase
+  stage: 'pint-site-stage',
   // Firebase headers
   headers,
   // An array of push manifest objects.

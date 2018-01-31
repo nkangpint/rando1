@@ -4,10 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "init": "npm run reset && cd src && bower install && cd .. && cd functions && npm install && cd .. && npm install && npm run build",
+    "init": "npm run reset && cd src && bower install && cd .. && cd functions && npm install --unsafe-perm && cd .. && npm install && npm run build",
     "build": "npm run build:dev",
     "build:dev": "node node_modules/pwa-build build --config config/main.js --fb --legacy",
     "build:prod": "node node_modules/pwa-build build --config config/main.js --min --es5 --sw --sitemap --fb --legacy",
+    "build:prod:stage": "node node_modules/pwa-build build --config config/main.js --min --es5 --sw --sitemap --fb --legacy --stage",
     "dev": "npm run dev:fb+",
     "dev:fb": "npm run build && firebase serve --only hosting",
     "dev:fb+": "npm run build:prod && firebase serve --only hosting,functions",
@@ -24,7 +25,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "pwa-build": "git+ssh://git@gitlab.pint.com/pwa/pwa-build.git#0.0.5"
+    "pwa-build": "git+https://gitlab-ci-token:-YSz_fRE3LYaCs17nFy2@gitlab.pint.com/pwa/pwa-build#0.0.7"
   },
   "dependencies": {}
 }

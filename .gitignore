@@ -12,3 +12,4 @@ yarn.lock
 firebase-debug.log
 .runtimeconfig.json
 .idea/
+temp/

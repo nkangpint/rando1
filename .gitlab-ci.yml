@@ -1,16 +1,16 @@
 image: mschultzpint/firebase-env:latest
 
-# deploy:live:
-#   only:
-#     - master 
-#   stage: deploy
-#   script:
-#     - node -v
-#     - npm install --unsafe-perm
-#     - npm run init 
-#     - npm run build:prod
-#     - cd dist && ls
-#     - firebase deploy --token "$FIREBASE_TOKEN"
+deploy:live:
+  only:
+    - master 
+  stage: deploy
+  script:
+    - node -v
+    - npm install --unsafe-perm
+    - npm run init 
+    - npm run build:prod
+    - cd dist && ls
+    - firebase deploy --token "$FIREBASE_TOKEN"
 
 deploy:stage:
   only:

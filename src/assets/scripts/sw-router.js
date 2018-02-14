@@ -27,8 +27,8 @@ self.toolbox.router.get(/fullstory\.com\/s\/fs\.js/, self.toolbox.cacheFirst, {
 
 self.toolbox.router.get(/maps\.googleapis\.com\/maps\/api\/staticmap/, self.toolbox.cacheFirst, {
 	cache: {
-		name: 'staticmap',
-		maxEntries: 1,
-		maxEntries: 60 * 60 * 24 * 31
+		name: 'google-static-map',
+		maxEntries: 10,
+		maxAgeSeconds: 60 * 60 * 24
 	}
 });

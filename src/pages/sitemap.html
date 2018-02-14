@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+	{#
+  {% set pages = Page.query().order(-Page.url).fetch(projection=[Page.url, Page.updated_at]) %}
+	{% for page in pages %}
+	<url>
+		<loc>{{{ request.base_url ~ page.url }}}</loc>
+		<lastmod>{{{ formatTime(page.updated_at, '%Y-%m-%dT%H:%M:%S+00:00') }}}</lastmod>
+		<changefreq>daily</changefreq>
+	</url>
+	{% endfor %}
+	#}
+</urlset>

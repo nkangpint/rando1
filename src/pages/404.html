@@ -4,12 +4,14 @@
 </template>
 
 <template type="body">
-  <section class="wrapper">
-    <div class="inner">
-      <h1>Whoops!</h1>
-      <h2>We can’t find the page you’re looking for.</h2>
-      <p>Error code: 404</p>
-      <p>Try starting over at <a href="/">home</a> or head to the <a href="//blog.pint.com/">blog</a>.</p>
-    </div>
-  </section>
+ <section class="section-404" class="bg bg--secondary">
+  <div class="inner">
+
+    <div class="row">
+      <div class="col--main">
+        <h2>Whoops...</h2>
+        <h3>We couldn't find the page {{{ request.url }}}</h3>
+      </div>
+  </div>
+</section>
 </template>
